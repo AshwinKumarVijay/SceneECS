@@ -1,0 +1,149 @@
+#version 430 core
+
+// CONSTANTS - PI
+const float PI = 3.1415926535897932384626433832795;
+const float PI_2 = 1.57079632679489661923;
+const float PI_4 = 0.785398163397448309616;
+
+//	MAX LIGHTS
+#define MAX_LIGHTS 16
+
+//	SAMPLE COUNT.
+#define SAMPLES 32
+
+//	CAMERA DATA. UNIFORM CAMERA POSITION, CAMERA PERSPECTIVE MATRIX, CAMERA VIEW MATRIX.
+layout (location = 10) uniform vec4 u_worldCameraPosition;
+layout (location = 11) uniform mat4 u_cameraPerspectiveMatrix;
+layout (location = 12) uniform mat4 u_cameraViewMatrix;
+layout (location = 13) uniform mat4 u_inverseTransposeCameraViewMatrix;
+layout (location = 14) uniform mat4 u_screenSpaceViewMatrix;
+layout (location = 15) uniform vec4 u_cameraNearFarPlaneDistance;
+
+//	MODEL MATRIX, NORMAL MATRIX. MODEL VIEW MATRIX, MV NORMAL MATRIX, SCREEN SPACE VIEW MATRIX, SCREEN SPACE MV MATRIX.
+layout (location = 20) uniform mat4 u_modelMatrix;
+layout (location = 21) uniform mat3 u_inverseTransposeModelMatrix;
+layout (location = 22) uniform mat4 u_modelViewMatrix;
+layout (location = 23) uniform mat3 u_inverseTransposeModelViewMatrix;
+
+//	MATERIAL DATA. DIFFUSE ALBEDO, METALLICNESS, ROUGHNESS, FRESNEL, OPACITY.
+layout (location = 30) uniform vec4 u_diffuseAlbedo;
+layout (location = 31) uniform vec4 u_specularAlbedo;
+layout (location = 32) uniform vec4 u_emssionColorAndIntensity;
+layout (location = 33) uniform vec4 u_metallicnessRoughnessFresnelOpacity;
+
+//	VERTEX ATTRIBUTES
+//	VERTEX POSITION, VERTEX NORMAL, VERTEX TANGENT, VERTEX BITANGENT.
+layout (location = 0) in vec4 v_vertexPosition;
+layout (location = 1) in vec3 v_vertexNormal;
+layout (location = 2) in vec4 v_vertexColor;
+
+layout (location = 3) in vec3 v_vertexTangent;
+layout (location = 4) in vec3 v_vertexBitangent;
+
+//	VERTEX TEXTURE COORDINATES ONE AND TWO.
+layout (location = 5) in vec2 v_vertexTextureCoordinatesOne;
+layout (location = 6) in vec2 v_vertexTextureCoordinatesTwo;
+
+
+//	FRAGMENT OUTPUT COLOR.
+layout (location = 0) out vec4 o_baseOutputColor;
+
+//	G BUFFER TEXTURES OUT.
+//	layout (location = 0) out vec4 o_worldSpaceVertexPosition;
+//	layout (location = 1) out vec4 o_worldSpaceVertexNormal;
+//	layout (location = 2) out vec4 o_worldSpaceVertexNormal;
+//	layout (location = 3) out vec4 o_worldSpaceVertexNormal;
+//	layout (location = 4) out vec4 o_diffuseAlbedo;
+//	layout (location = 5) out vec4 o_specularAlbedo;
+//	layout (location = 6) out vec4 o_emissionColorAndIntensity;
+//	layout (location = 7) out vec4 o_metallicnessRoughnessFresnelOpacity;
+
+//	SAMPLING TEXTURES
+//	ENVIRONMENT MAP SAMPLER CUBE.
+layout (binding = 0) uniform samplerCube u_backgroundEnvironmentCubeMapOne;
+layout (binding = 1) uniform samplerCube u_backgroundEnvironmentCubeMapTwo;
+layout (binding = 2) uniform samplerCube u_backgroundEnvironmentCubeMapThree;
+layout (binding = 3) uniform samplerCube u_backgroundEnvironmentCubeMapFour;
+
+//	DIFFUSE ALBEDO, SPECULAR ALBEDO MAP, EMISSIVE COLOR AND INTENSITY MAP, METALLIC ROUGHNESS, FRESNEL AND OPACITY MAP.
+layout (binding = 15) uniform sampler2D u_diffuseAlbedoMap;
+layout (binding = 16) uniform sampler2D u_specularAlbedoMap;
+layout (binding = 17) uniform sampler2D u_emssionColorAndIntensityMap;
+layout (binding = 18) uniform sampler2D u_metallicnessRoughnessFresnelOpacityMap;
+
+//	G BUFFER TEXTURES FOR SECOND PASS OF DEFERRED RENDERING.
+layout (binding = 20) uniform sampler2D g_worldSpaceVertexPosition;
+layout (binding = 21) uniform sampler2D g_worldSpaceVertexNormal;
+layout (binding = 22) uniform sampler2D g_viewSpaceVertexPositionAndDepth;
+layout (binding = 23) uniform sampler2D g_viewSpaceVertexNormal;
+layout (binding = 24) uniform sampler2D g_diffuseAlbedo;
+layout (binding = 25) uniform sampler2D g_specularAlbedo;
+layout (binding = 26) uniform sampler2D g_emissionColorAndIntensity;
+layout (binding = 27) uniform sampler2D g_metallicnessRoughnessFresnelOpacity;
+
+
+layout (binding = 35) uniform sampler2D pp_inputTextureOne;
+layout (binding = 36) uniform sampler2D pp_inputTextureTwo;
+layout (binding = 37) uniform sampler2D pp_inputTextureThree;
+layout (binding = 38) uniform sampler2D pp_inputTextureFour;
+layout (binding = 39) uniform sampler2D pp_inputTextureFive;
+layout (binding = 39) uniform sampler2D pp_inputTextureSix;
+layout (binding = 39) uniform sampler2D pp_inputTextureSeven;
+layout (binding = 39) uniform sampler2D pp_inputTextureEight;
+
+//	
+layout (binding = 45) uniform sampler2D t_noiseTextureOne;
+layout (binding = 46) uniform sampler2D t_noiseTextureTwo;
+layout (binding = 47) uniform sampler2D t_noiseTextureThree;
+layout (binding = 48) uniform sampler2D t_noiseTextureFour;
+
+
+//	Environment Map Intensities.
+uniform vec4 u_backgroundEnvironmentIntensities;
+
+
+//	AMBIENT LIGHT.
+uniform vec4 u_ambientLight;
+
+//	LIGHT DESCRIPTION STRUCT.
+struct Light
+{
+	//	Vector of Options: Light Enabled, Locality, Light Type.
+	vec4 lightEnabledShadowLightType;
+
+	//	Vector of Options: 
+	vec4 lightPosition;
+
+	//	Vector of Options: 
+	vec4 lightColorAndLightIntensity;
+
+	//	Vector of Options: 
+	vec4 lightConeDirection;
+
+	//	Vector of Options: 
+	vec4 lightAttenuationAndDistance;
+
+	//	Vector of Options: 
+	vec4 lightSpotCosCutOffAndExponent;
+};
+
+
+//	THE ARRAY OF LIGHTS.
+uniform Light u_lights[MAX_LIGHTS];
+
+
+//	SAMPLING.
+//	Unit Square Samples.
+uniform vec4 u_unitSquareSamples[SAMPLES];
+
+//	Hemisphere Samples.
+uniform vec4 u_hemisphereSamples[SAMPLES];
+
+
+//	THE FRAGMENT SHADER MAIN.
+void main(void)
+{
+
+
+
+}

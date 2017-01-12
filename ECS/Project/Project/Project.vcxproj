@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0C36CC7E-CBA1-4EA5-9785-F7F8A1C81D68}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Project</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <CodeAnalysisRuleSet>D:\Visual Studio - 2015\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glfw3dll.lib;glew32.lib;glew32s.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnablePREfast>false</EnablePREfast>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2main.lib;SDL2test.lib;glfw3.lib;glfw3dll.lib;glew32.lib;glew32s.lib;OpenGL32.lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2main.lib;SDL2test.lib;openvr_api.lib;glfw3.lib;glfw3dll.lib;glew32.lib;glew32s.lib;OpenGL32.lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>.\lib64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2main.lib;SDL2test.lib;glfw3.lib;glfw3dll.lib;glew32.lib;glew32s.lib;OpenGL32.lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ECS\ComponentMaker\ComponentMaker.cpp" />
+    <ClCompile Include="ECS\MainResourceManager\MainResourceManager.cpp" />
+    <ClCompile Include="Components\LightComponent\LightComponent.cpp" />
+    <ClCompile Include="Renderers\RendererResourceManagers\RendererShaderManager\RendererShaderData\RendererShaderData.cpp" />
+    <ClCompile Include="Renderers\RendererModules\FPassLightingModule\FPassLightingModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\DPassLightingModule\DPassLightingModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\GBufferModule\GBufferModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\LightsModule\LightsModule.cpp" />
+    <ClCompile Include="Renderers\ModuleRenderer\ModuleRenderer.cpp" />
+    <ClCompile Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.cpp" />
+    <ClCompile Include="Components\SelectionComponent\SelectionComponent.cpp" />
+    <ClCompile Include="Components\MovementResponseComponent\MovementResponseComponent.cpp" />
+    <ClCompile Include="Renderers\RendererModules\RendererModule.cpp" />
+    <ClCompile Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.cpp" />
+    <ClCompile Include="Renderers\RenderableManager\RenderableManager.cpp" />
+    <ClCompile Include="Renderers\RendererModules\ShadowsModule\ShadowsModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\RTSModule\RTSModule.cpp" />
+    <ClCompile Include="SceneECS\SceneECS.cpp" />
+    <ClCompile Include="SceneECS\SceneComponentMaker\SceneComponentMaker.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneResourceManager.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneGeometryResourceManager\SceneGeometryResourceManager.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneMaterialResourceManager\SceneMaterialResourceManager.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneTextureResourceManager\SceneTextureResourceManager.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneOBJResourceManager\SceneOBJResourceManager.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneResource\SceneResource.cpp" />
+    <ClCompile Include="SceneECS\SceneMaker\SceneMaker.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneResourceRequest\SceneResourceRequest.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneShaderResourceManager\SceneShaderResourceManager.cpp" />
+    <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
+    <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
+    <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
+    <ClCompile Include="RDFP\RDFP.cpp" />
+    <ClCompile Include="RDFP\ResourceDescription.cpp" />
+    <ClCompile Include="Renderers\Sampler\Sampler.cpp" />
+    <ClCompile Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.cpp" />
+    <ClCompile Include="Systems\InputSystem\InputSystem.cpp" />
+    <ClCompile Include="Events\InteractionEvent\InteractionEvent.cpp" />
+    <ClCompile Include="Systems\CameraSystem\CameraSystem.cpp" />
+    <ClCompile Include="Components\CameraComponent\CameraComponent.cpp" />
+    <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="ECS\Component\Component.cpp" />
+    <ClCompile Include="Components\GeometryComponent\GeometryComponent.cpp" />
+    <ClCompile Include="Components\HierarchyComponent\HierarchyComponent.cpp" />
+    <ClCompile Include="Components\PhysicsComponent\PhysicsComponent.cpp" />
+    <ClCompile Include="Components\RenderingComponent\RenderingComponent.cpp" />
+    <ClCompile Include="Components\TransformComponent\TransformComponent.cpp" />
+    <ClCompile Include="Configuration\Configuration.cpp" />
+    <ClCompile Include="ECS\ECS.cpp" />
+    <ClCompile Include="ECS\ECSEvent\ECSEvent.cpp" />
+    <ClCompile Include="ECS\EntityManager\EntityManager.cpp" />
+    <ClCompile Include="ECS\EntityManager\Entity\Entity.cpp" />
+    <ClCompile Include="ECS\EventQueue\EventQueue.cpp" />
+    <ClCompile Include="Resources\ResourceData\GeometryData\GeometryData.cpp" />
+    <ClCompile Include="Resources\ResourceData\PhysicsData\PhysicsData.cpp" />
+    <ClCompile Include="Renderers\Renderable\Renderable.cpp" />
+    <ClCompile Include="Renderers\Renderer\Renderer.cpp" />
+    <ClCompile Include="Systems\RenderingSystem\RenderingSystem.cpp" />
+    <ClCompile Include="ECS\System\System.cpp" />
+    <ClCompile Include="Systems\TransformSystem\TransformSystem.cpp" />
+    <ClCompile Include="Resources\ResourceData\TextureData\TextureBufferData\TextureBufferData.cpp" />
+    <ClCompile Include="TextureGeneratorSelector\TextureGeneratorSelector.cpp" />
+    <ClCompile Include="Transform\Transform.cpp" />
+    <ClCompile Include="GeometryGeneratorSelector\GeometryGeneratorSelector.cpp" />
+    <ClCompile Include="Events\InputEvent\InputEvent.cpp" />
+    <ClCompile Include="include\TinyObjLoader\tiny_obj_loader.cc" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Resources\ResourceManager\ResourceManager.cpp" />
+    <ClCompile Include="Resources\ResourceManager\TextureResourceManager\TextureResourceManager.cpp" />
+    <ClCompile Include="Resources\ResourceManager\ShaderResourceManager\ShaderResourceManager.cpp" />
+    <ClCompile Include="Events\ResourceEvent\ResourceEvent.cpp" />
+    <ClCompile Include="Resources\ResourceData\ShaderData\ShaderData.cpp" />
+    <ClCompile Include="Resources\ResourceData\MaterialData\MaterialData.cpp" />
+    <ClCompile Include="Resources\ResourceData\TextureData\TextureData.cpp" />
+    <ClCompile Include="Renderers\RendererResourceManagers\RendererGeometryManager\RendererGeometryManager.cpp" />
+    <ClCompile Include="Renderers\RendererResourceManagers\RendererLightManager\RendererLightManager.cpp" />
+    <ClCompile Include="Renderers\RendererResourceManagers\RendererMaterialManager\RendererMaterialManager.cpp" />
+    <ClCompile Include="Renderers\RendererResourceManagers\RendererShaderManager\RendererShaderManager.cpp" />
+    <ClCompile Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.cpp" />
+    <ClCompile Include="Resources\ResourceData\ResourceData.cpp" />
+    <ClCompile Include="Triangle\Triangle.cpp" />
+    <ClCompile Include="Renderers\VAOStorage\VAOStorage.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ECS\ComponentMaker\ComponentMaker.h" />
+    <ClInclude Include="ECS\MainResourceManager\MainResourceManager.h" />
+    <ClInclude Include="Components\LightComponent\LightComponent.h" />
+    <ClInclude Include="Renderers\RendererResourceManagers\RendererShaderManager\RendererShaderData\RendererShaderData.h" />
+    <ClInclude Include="Renderers\RendererModules\FPassLightingModule\FPassLightingModule.h" />
+    <ClInclude Include="Renderers\RendererModules\DPassLightingModule\DPassLightingModule.h" />
+    <ClInclude Include="Renderers\RendererModules\GBufferModule\GBufferModule.h" />
+    <ClInclude Include="Renderers\RendererModules\LightsModule\LightsModule.h" />
+    <ClInclude Include="Renderers\ModuleRenderer\ModuleRenderer.h" />
+    <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AOBS.h" />
+    <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurModule.h" />
+    <ClInclude Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.h" />
+    <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.h" />
+    <ClInclude Include="Components\SelectionComponent\SelectionComponent.h" />
+    <ClInclude Include="Components\MovementResponseComponent\MovementResponseComponent.h" />
+    <ClInclude Include="Renderers\RendererModules\RendererModule.h" />
+    <ClInclude Include="Renderers\RenderableTypeBatch\RenderableTypeBatch.h" />
+    <ClInclude Include="Renderers\RenderableManager\RenderableManager.h" />
+    <ClInclude Include="Renderers\RenderablesMetaData.h" />
+    <ClInclude Include="Renderers\RendererModules\RendererModuleMetaData.h" />
+    <ClInclude Include="Renderers\RendererModules\ShadowsModule\ShadowsModule.h" />
+    <ClInclude Include="Renderers\Renderer\SceneMetaData.h" />
+    <ClInclude Include="Renderers\RendererModules\RTSModule\RTSModule.h" />
+    <ClInclude Include="SceneECS\SceneECS.h" />
+    <ClInclude Include="SceneECS\SceneComponentMaker\SceneComponentMaker.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneResourceManager.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneGeometryResourceManager\SceneGeometryResourceManager.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneMaterialResourceManager\SceneMaterialResourceManager.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneTextureResourceManager\SceneTextureResourceManager.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneOBJResourceManager\SceneOBJResourceManager.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneResource\SceneResource.h" />
+    <ClInclude Include="SceneECS\SceneMaker\SceneMaker.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneResourceRequest\SceneResourceRequest.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneShaderResourceManager\SceneShaderResourceManager.h" />
+    <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
+    <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
+    <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />
+    <ClInclude Include="RDFP\RDFP.h" />
+    <ClInclude Include="RDFP\ResourceDescription.h" />
+    <ClInclude Include="Renderers\Sampler\Sampler.h" />
+    <ClInclude Include="RNGs\RNGs.h" />
+    <ClInclude Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.h" />
+    <ClInclude Include="Systems\InputSystem\InputSystem.h" />
+    <ClInclude Include="Events\InteractionEvent\InteractionEvent.h" />
+    <ClInclude Include="Systems\CameraSystem\CameraSystem.h" />
+    <ClInclude Include="Components\CameraComponent\CameraComponent.h" />
+    <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="ECS\Component\Component.h" />
+    <ClInclude Include="Components\GeometryComponent\GeometryComponent.h" />
+    <ClInclude Include="Components\HierarchyComponent\HierarchyComponent.h" />
+    <ClInclude Include="Components\PhysicsComponent\PhysicsComponent.h" />
+    <ClInclude Include="Components\RenderingComponent\RenderingComponent.h" />
+    <ClInclude Include="Components\TransformComponent\TransformComponent.h" />
+    <ClInclude Include="Configuration\Configuration.h" />
+    <ClInclude Include="ECS\ECS.h" />
+    <ClInclude Include="ECS\ECSEvent\ECSEvent.h" />
+    <ClInclude Include="ECS\EntityManager\EntityManager.h" />
+    <ClInclude Include="ECS\EntityManager\Entity\Entity.h" />
+    <ClInclude Include="ECS\EventQueue\EventQueue.h" />
+    <ClInclude Include="Resources\ResourceData\GeometryData\GeometryData.h" />
+    <ClInclude Include="Resources\ResourceData\PhysicsData\PhysicsData.h" />
+    <ClInclude Include="Renderers\Renderable\Renderable.h" />
+    <ClInclude Include="Renderers\Renderer\Renderer.h" />
+    <ClInclude Include="Renderers\Renderer\RenderingCommands.h" />
+    <ClInclude Include="Systems\RenderingSystem\RenderingSystem.h" />
+    <ClInclude Include="StringModifiers\StringModifiers.h" />
+    <ClInclude Include="ECS\System\System.h" />
+    <ClInclude Include="Systems\TransformSystem\TransformSystem.h" />
+    <ClInclude Include="Resources\ResourceData\TextureData\TextureBufferData\TextureBufferData.h" />
+    <ClInclude Include="TextureGeneratorSelector\TextureGeneratorSelector.h" />
+    <ClInclude Include="Transform\Transform.h" />
+    <ClInclude Include="Triangle\Triangle.h" />
+    <ClInclude Include="TypesList\ComponentTypes.h" />
+    <ClInclude Include="TypesList\EntityState.h" />
+    <ClInclude Include="TypesList\EventTypes.h" />
+    <ClInclude Include="TypesList\InputTypes.h" />
+    <ClInclude Include="TypesList\InteractionTypes.h" />
+    <ClInclude Include="TypesList\ResourceTypes.h" />
+    <ClInclude Include="Renderers\VAOStorage\VAOStorage.h" />
+    <ClInclude Include="Vertex\Vertex.h" />
+    <ClInclude Include="GeometryGeneratorSelector\GeometryGeneratorSelector.h" />
+    <ClInclude Include="Events\InputEvent\InputEvent.h" />
+    <ClInclude Include="include\TinyObjLoader\tiny_obj_loader.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="Resources\ResourceManager\ResourceManager.h" />
+    <ClInclude Include="Resources\ResourceManager\TextureResourceManager\TextureResourceManager.h" />
+    <ClInclude Include="Resources\ResourceManager\ShaderResourceManager\ShaderResourceManager.h" />
+    <ClInclude Include="Events\ResourceEvent\ResourceEvent.h" />
+    <ClInclude Include="Resources\ResourceData\ShaderData\ShaderData.h" />
+    <ClInclude Include="Resources\ResourceData\MaterialData\MaterialData.h" />
+    <ClInclude Include="Resources\ResourceData\TextureData\TextureData.h" />
+    <ClInclude Include="Renderers\RendererResourceManagers\RendererGeometryManager\RendererGeometryManager.h" />
+    <ClInclude Include="Renderers\RendererResourceManagers\RendererLightManager\RendererLightManager.h" />
+    <ClInclude Include="Renderers\RendererResourceManagers\RendererMaterialManager\RendererMaterialManager.h" />
+    <ClInclude Include="Renderers\RendererResourceManagers\RendererShaderManager\RendererShaderManager.h" />
+    <ClInclude Include="Renderers\RendererResourceManagers\RendererTextureManager\RendererTextureManager.h" />
+    <ClInclude Include="Resources\ResourceData\ResourceData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Configurations\DefaultConfig.txt" />
+    <Text Include="Assets\ModuleRendererShaders\DeferredGBufferPassShaders\BasicGBufferShaders\BasicGBufferShader.frag.glsl" />
+    <Text Include="Assets\ModuleRendererShaders\DeferredGBufferPassShaders\BasicGBufferShaders\BasicGBufferShader.vert.glsl" />
+    <Text Include="Assets\ModuleRendererShaders\DeferredLightingPassShaders\PhongLightingPassShaders\PhongLightingShader.vert.glsl" />
+    <Text Include="Assets\ModuleRendererShaders\DeferredLightingPassShaders\PhongLightingPassShaders\PhongLightingShader.frag.glsl" />
+    <Text Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\BasicGBufferShader\BasicGBufferShader.frag.glsl" />
+    <Text Include="Assets\NewShaders\EnvironmentShaders\ECube.frag.glsl" />
+    <Text Include="Assets\NewShaders\EnvironmentShaders\ECube.vert.glsl" />
+    <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.frag.glsl" />
+    <Text Include="Assets\NewShaders\LightingShaders\ShadowMapsShader\SMPointLight.vert.glsl" />
+    <Text Include="Assets\NewShaders\PostProcessShader\SSAO\SSAO.vert.glsl" />
+    <Text Include="Assets\NewShaders\PostProcessShader\SSAO\SSAO.frag.glsl" />
+    <Text Include="Assets\NewShaders\ShaderTemplate\FragementShaderTemplate.txt" />
+    <Text Include="Assets\NewShaders\ShaderTemplate\VertexShaderTemplate.txt" />
+    <Text Include="Assets\Resource Description Files\RDF.txt" />
+    <Text Include="Assets\Resource Description Files\RDF2.txt" />
+    <Text Include="Assets\Scene Description Files\SDF.txt" />
+    <Text Include="Assets\Scene Description Files\SDF2.txt" />
+    <Text Include="Assets\Shaders\VERTEX SHADERS\DEFERRED_RENDERER_VERTEX_SHADER.txt" />
+    <Text Include="Assets\Shaders\FRAGMENT SHADERS\DEFAULT_FRAGMENT_SHADER.txt" />
+    <Text Include="Assets\Shaders\FRAGMENT SHADERS\ENVIRONMENT_CUBEMAP_FRAGMENT_SHADER.txt" />
+    <Text Include="Assets\Shaders\FRAGMENT SHADERS\PHONG_MATERIAL_FRAGMENT_SHADER.txt" />
+    <Text Include="Assets\Shaders\VERTEX SHADERS\DEFAULT_VERTEX_SHADER.txt" />
+    <Text Include="Assets\Shaders\VERTEX SHADERS\ENVIRONMENT_CUBEMAP_VERTEX_SHADER.txt" />
+    <Text Include="Assets\Shaders\VERTEX SHADERS\GOURAUD_MATERIAL_VERTEX_SHADER.txt" />
+    <Text Include="Assets\Shaders\VERTEX SHADERS\PHONG_MATERIAL_VERTEX_SHADER.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\ModuleRendererShaders\PostProcessShaders\HDRShaders\HDR.frag.glsl" />
+    <None Include="Assets\ModuleRendererShaders\PostProcessShaders\HDRShaders\HDR.vert.glsl" />
+    <None Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\InstancedBasicGBufferShader\InstancedBasicGBufferShader.frag.glsl" />
+    <None Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\InstancedBasicGBufferShader\InstancedBasicGBufferShader.vert.glsl" />
+    <None Include="Assets\NewShaders\DeferredRenderingShaders\LightingPassShaders\BasicLightingShader\BasicLightingShader.frag.glsl" />
+    <None Include="Assets\NewShaders\DeferredRenderingShaders\LightingPassShaders\BasicLightingShader\BasicLightingShader.vert.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\AmbientColorShader\AmbientColor.frag.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\AmbientColorShader\AmbientColor.vert.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.frag.glsl" />
+    <None Include="Assets\NewShaders\LightingShaders\CurrentViewLightingShader\CVSShader.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\AdditiveBlendTextures\AdditiveBlendTextures.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\AdditiveBlendTextures\AdditiveBlendTextures.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\AlphaBlendTextures\AlphaBlendTextures.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\AlphaBlendTextures\AlphaBlendTextures.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\CopyTexture\CopyTexture.vert.glsl" />
+    <None Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\BasicGBufferShader\BasicGBufferShader.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\FXAA\FXAA.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\FXAA\FXAA.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\GaussianBlur\GaussianBlur.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\GaussianBlur\GaussianBlur.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\Bloom\Bloom.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\Bloom\Bloom.vert.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\HDR\HDR.frag.glsl" />
+    <None Include="Assets\NewShaders\PostProcessShader\HDR\HDR.vert.glsl" />
+    <None Include="Renderers\RendererModules\GBufferModule\GBufferShaderSource\BasicGBuffer.frag.glsl" />
+    <None Include="Renderers\RendererModules\GBufferModule\GBufferShaderSource\BasicGBuffer.vert.glsl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

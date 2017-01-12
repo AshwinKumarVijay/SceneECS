@@ -1,0 +1,35 @@
+#Resource Description File
+
+//	OBJ Resources!
+#define Resource
+Resource Name = Sphere
+Resource Type = OBJ
+Directory = Assets/OBJs/
+Source Filename = Sphere.obj
+#end Resource
+
+#define Resource
+Resource Name = Cube
+Resource Type = OBJ
+Directory = Assets/OBJs/
+Source Filename = Cube.obj
+#end Resource
+
+
+//    Material Resources!
+#define Resource 
+Resource Name = Light_Blue_Material
+Resource Type = Material
+Material Diffuse Albedo        = 0.0, 0.9, 0.9, 0.0
+Material Specular Albedo       = 1.0, 1.0, 1.0, 1.0
+Material Emissive Color        = 0.0, 0.0, 0.0, 0.0
+Material Metallicness Roughness and Opacity    = 0.5, 0.8, 0.6, 1.0
+Material Diffuse Albedo Map    = None
+Material Specular Albedo Map   = None
+Material MRFO Map              = None
+Material Normal Map            = None
+Material Occlusion Map         = None
+#end Resource
+
+
+

@@ -1,0 +1,65 @@
+#Scene Description File
+
+#Entity #Create CubeEntityOne
+
+#Component #Add CubeEntityOne Hierarchy
+#Component #Add CubeEntityOne Transform
+#Component #Add CubeEntityOne Geometry
+#Component #Add CubeEntityOne Rendering
+
+#Component #Update CubeEntityOne Geometry Cube
+#Component #Update CubeEntityOne Rendering Material Material-Default-2
+#Component #Update CubeEntityOne Rendering ShadingType OPAQUE_BASIC
+
+#Component #Update CubeEntityOne Transform RotateBy 0.0 1.0 0.0 0.0
+#Component #Update CubeEntityOne Transform ScaleBy 1.0 1.0 1.0
+#Component #Update CubeEntityOne Transform TranslateBy 0.0, 0.0, 0.0
+
+
+#Entity #Create CubeEntityTwo
+
+#Component #Add CubeEntityTwo Hierarchy
+#Component #Add CubeEntityTwo Transform
+#Component #Add CubeEntityTwo Geometry
+#Component #Add CubeEntityTwo Rendering
+
+#Component #Update CubeEntityTwo Geometry Cube
+#Component #Update CubeEntityTwo Rendering Material Material-Default-4
+#Component #Update CubeEntityTwo Rendering ShadingType OPAQUE_BASIC
+
+#Component #Update CubeEntityTwo Transform RotateBy 0.0 1.0 0.0 0.0
+#Component #Update CubeEntityTwo Transform ScaleBy 1.0 1.0 1.0
+#Component #Update CubeEntityTwo Transform TranslateBy 2.0, 0.0, 0.0
+
+
+#Entity #Create CubeEntityThree
+
+#Component #Add CubeEntityThree Hierarchy
+#Component #Add CubeEntityThree Transform
+#Component #Add CubeEntityThree Geometry
+#Component #Add CubeEntityThree Rendering
+
+#Component #Update CubeEntityThree Geometry Cube
+#Component #Update CubeEntityThree Rendering Material Material-Default-1
+#Component #Update CubeEntityThree Rendering ShadingType OPAQUE_BASIC
+
+#Component #Update CubeEntityThree Transform RotateBy 0.0 1.0 0.0 0.0
+#Component #Update CubeEntityThree Transform ScaleBy 1.0 1.0 1.0
+#Component #Update CubeEntityThree Transform TranslateBy 4.0, 0.0, 0.0
+
+
+
+#Entity #Create CubeEntityFour
+
+#Component #Add CubeEntityFour Hierarchy
+#Component #Add CubeEntityFour Transform
+#Component #Add CubeEntityFour Geometry
+#Component #Add CubeEntityFour Rendering
+
+#Component #Update CubeEntityFour Geometry Cube
+#Component #Update CubeEntityFour Rendering Material Material-Default-5
+#Component #Update CubeEntityFour Rendering ShadingType OPAQUE_BASIC
+
+#Component #Update CubeEntityFour Transform RotateBy 0.0 1.0 0.0 0.0
+#Component #Update CubeEntityFour Transform ScaleBy 8.0 0.5 8.0
+#Component #Update CubeEntityFour Transform TranslateBy 0.0, -1.0, 0.0
