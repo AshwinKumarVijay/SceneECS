@@ -2,8 +2,8 @@
 
 
 //	Default Gaussian Blur Framebuffer ID Constructor.
-GaussianBlurModule::GaussianBlurModule(std::shared_ptr<Renderer> newModuleRenderer, const unsigned int & newBlurPassCount, const unsigned int & newTextureID, const unsigned int & newTextureWidth, const unsigned int & newTextureHeight)
-	:RendererModule(newModuleRenderer)
+GaussianBlurModule::GaussianBlurModule(std::shared_ptr<Renderer> newRenderer, const unsigned int & newBlurPassCount, const unsigned int & newTextureID, const unsigned int & newTextureWidth, const unsigned int & newTextureHeight)
+	:RendererModule(newRenderer)
 {
 	//	The Input Texture ID and Output Texture ID.
 	textureID = newTextureID;

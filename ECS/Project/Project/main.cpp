@@ -57,11 +57,14 @@ int initializeGLFW()
 	glfwWindowHint(GLFW_RESIZABLE, 0);
 //	glfwWindowHint(GLFW_DECORATED, 0);
 
-	glfwWindowHint(GLFW_SAMPLES, 4);
+//	glfwWindowHint(GLFW_SAMPLES, 4);
 
-	window = glfwCreateWindow(1600, 900, "System Of Planets", NULL, NULL);
+	window = glfwCreateWindow(1600, 900, "Scene ECS", NULL, NULL);
+
 	glfwSetWindowPos(window, 160, 90);
 	glfwSwapInterval(1);
+
+	//	Set the Callbacks.
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorEnterCallback(window, cursor_enter_callback);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
@@ -101,6 +104,8 @@ void initializeECS()
 
 	//	Read in the Resources from the Resources File.
 	ecs->loadResourcesFromFile(Configuration::getConfiguration().getProperty("RESOURCES FILE"));
+
+	//	Read int the Scene from the Scene File.
 	ecs->loadSceneFromfile(Configuration::getConfiguration().getProperty("SCENE FILE"));
 }
 

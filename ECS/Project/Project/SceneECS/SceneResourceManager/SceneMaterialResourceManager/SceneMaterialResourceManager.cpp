@@ -74,16 +74,16 @@ void SceneMaterialResourceManager::loadResource(const ResourceDescription & newR
 
 			//	Add it to the Material Manager.
 			std::shared_ptr<MaterialData> newMaterialData = std::make_shared<MaterialData>();
-			newMaterialData->diffuseAlbdeo = diffuseAlbedoValues;
-			newMaterialData->specularAlbedo = specularAlbedoValues;
-			newMaterialData->emissiveColor = emissiveColorValues;
-			newMaterialData->metallicRoughnessFresnelOpacity = metallicRoughnessFresnelOpacityValues;
+			newMaterialData->setDiffuseAlbedo(diffuseAlbedoValues);
+			newMaterialData->setSpecularAlbedo(specularAlbedoValues);
+			newMaterialData->setEmissiveColor(emissiveColorValues);
+			newMaterialData->setMRFO(metallicRoughnessFresnelOpacityValues);
 
-			newMaterialData->DiffuseAlbedoMap = "NONE";
-			newMaterialData->SpecularAlbedoMap = "NONE";
-			newMaterialData->MRFOMap = "NONE";
-			newMaterialData->NormalMap = "NONE";
-			newMaterialData->OcclusionMap = "NONE";
+			newMaterialData->diffuseAlbedoTexture = "";
+			newMaterialData->specularAlbedoTexture = "";
+			newMaterialData->MRFOTexture = "";
+			newMaterialData->normalTexture = "";
+			newMaterialData->occlusionTexture = "";
 			addMaterial(resourceName, newMaterialData);
 		}
 	}

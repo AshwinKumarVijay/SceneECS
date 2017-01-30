@@ -3,8 +3,9 @@
 //	Default GeometryData Constructor.
 GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector<int>& newGeometryIndices, const std::vector<Vertex>& newGeometryVertices)
 {
-	//	Copy over the Geometry Description Representation.
-	geometryDescription = 1;
+	hasGeometryVertexData = 1;
+	hasGeometryVertexTextureData = 0;
+	hasGeometryVertexTangentBitangentData = 0;
 
 	//	Copy over the Geometry Draw Type.
 	geometryDrawType = newGeometryDrawType;
@@ -20,8 +21,9 @@ GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector
 GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector<int>& newGeometryIndices, const std::vector<Vertex> & newGeometryVertices, const std::vector<VertexNormalData>& newGeometryNormalData)
 {
 
-	//	Copy over the Geometry Description Representation.
-	geometryDescription = 3;
+	hasGeometryVertexData = 1;
+	hasGeometryVertexTextureData = 0;
+	hasGeometryVertexTangentBitangentData = 1;
 
 	//	Copy over the Geometry Draw Type.
 	geometryDrawType = newGeometryDrawType;
@@ -39,9 +41,10 @@ GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector
 //	
 GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector<int>& newGeometryIndices, const std::vector<Vertex> & newGeometryVertices, const std::vector<VertexTextureData> & newGeometryTextureData)
 {
-
-	//	Copy over the Geometry Description Representation.
-	geometryDescription = 5;
+	//	
+	hasGeometryVertexData = 1;
+	hasGeometryVertexTextureData = 1;
+	hasGeometryVertexTangentBitangentData = 0;
 
 	//	Copy over the Geometry Draw Type.
 	geometryDrawType = newGeometryDrawType;
@@ -59,8 +62,10 @@ GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector
 //	
 GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector<int>& newGeometryIndices, const std::vector<Vertex>& newGeometryVertices, const std::vector<VertexNormalData> & newGeometryNormalData, const std::vector<VertexTextureData> & newGeometryTextureData)
 {
-	//	Copy over the Geometry Description Representation.
-	geometryDescription = 7;
+	//	
+	hasGeometryVertexData = 1;
+	hasGeometryVertexTextureData = 1;
+	hasGeometryVertexTangentBitangentData = 0;
 
 	//	Copy over the Geometry Draw Type.
 	geometryDrawType = newGeometryDrawType;
@@ -82,8 +87,6 @@ GeometryData::GeometryData(const GLenum & newGeometryDrawType, const std::vector
 GeometryData::GeometryData(const unsigned int & newGeometryDescription, const GLenum & newGeometryDrawType, const std::vector<int>& newGeometryIndices, const std::vector<Vertex>& newGeometryVertices, const std::vector<VertexNormalData>& newGeometryNormalData, const std::vector<VertexTextureData>& newGeometryTextureData)
 {
 
-	//	Copy over the Geometry Description Representation.
-	geometryDescription = newGeometryDescription;
 
 	//	Copy over the Geometry Draw Type.
 	geometryDrawType = newGeometryDrawType;
@@ -138,8 +141,20 @@ const std::vector<VertexTextureData>& GeometryData::viewGeometryTextureData() co
 	return geometryTextureData;
 }
 
-//	Return the Geometry Description Representation.
-int GeometryData::getGeometryDescriptionRepresentation() const
+//	Return the Geometry Vertex Data.
+unsigned int GeometryData::getHasVertexData() const
 {
-	return geometryDescription;
+	return hasGeometryVertexData;
+}
+
+//	Return Has Vertex Texture Data.
+unsigned int GeometryData::getHasVertexTextureData() const
+{
+	return hasGeometryVertexTextureData;
+}
+
+//	Return the Vertex Tangent Bitangent.
+unsigned int GeometryData::getHasVertexTangentBitangentData() const
+{
+	return hasGeometryVertexTangentBitangentData;
 }

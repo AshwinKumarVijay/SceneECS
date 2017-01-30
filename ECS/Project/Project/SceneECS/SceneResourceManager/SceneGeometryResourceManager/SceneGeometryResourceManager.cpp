@@ -25,7 +25,7 @@ void SceneGeometryResourceManager::processRequest(std::shared_ptr<SceneResourceR
 	{
 		if (resourceRequest->getRequestType() == "ADD")
 		{
-			std::shared_ptr<GeometryData> newGeometryData = std::make_shared<GeometryData>(resourceRequest->geometryDescriptionRepresentation, resourceRequest->geometryDrawType, *resourceRequest->geometryIndices, *resourceRequest->geometryVertices, *resourceRequest->geometryNormalData, *resourceRequest->geometryTextureData);
+			std::shared_ptr<GeometryData> newGeometryData = std::make_shared<GeometryData>(resourceRequest->geometryDataType, resourceRequest->geometryDrawType, *resourceRequest->geometryIndices, *resourceRequest->geometryVertices, *resourceRequest->geometryNormalData, *resourceRequest->geometryTextureData);
 
 
 			addGeometry(resourceRequest->geometryType, newGeometryData);
@@ -33,7 +33,7 @@ void SceneGeometryResourceManager::processRequest(std::shared_ptr<SceneResourceR
 
 		if (resourceRequest->getRequestType() == "UPDATE")
 		{
-			std::shared_ptr<GeometryData> updatedGeometryData = std::make_shared<GeometryData>(resourceRequest->geometryDescriptionRepresentation, resourceRequest->geometryDrawType, *resourceRequest->geometryIndices, *resourceRequest->geometryVertices, *resourceRequest->geometryNormalData, *resourceRequest->geometryTextureData);
+			std::shared_ptr<GeometryData> updatedGeometryData = std::make_shared<GeometryData>(resourceRequest->geometryDataType, resourceRequest->geometryDrawType, *resourceRequest->geometryIndices, *resourceRequest->geometryVertices, *resourceRequest->geometryNormalData, *resourceRequest->geometryTextureData);
 
 			
 			updateGeometry(resourceRequest->geometryType, updatedGeometryData);
@@ -41,7 +41,6 @@ void SceneGeometryResourceManager::processRequest(std::shared_ptr<SceneResourceR
 
 		if (resourceRequest->getRequestType() == "DELETE")
 		{
-
 			deleteGeometry(resourceRequest->geometryType);
 		}
 	}
@@ -51,9 +50,9 @@ void SceneGeometryResourceManager::processRequest(std::shared_ptr<SceneResourceR
 //	Add the Geometry Data under the specified name.
 void SceneGeometryResourceManager::addGeometry(std::string newGeometryName, std::shared_ptr<GeometryData> newGeometryData)
 {
-	auto geometryIterator = mapNameToGeometryData.find(newGeometryName);
+	auto geometryi = mapNameToGeometryData.find(newGeometryName);
 
-	if (geometryIterator != mapNameToGeometryData.end())
+	if (geometryi != mapNameToGeometryData.end())
 	{
 		//	Throw Geometry already present error.
 		throw "Error! Scene Geometry Resource Manager : Add Geometry - Geometry with the specified Name Already Exists!";
@@ -70,11 +69,11 @@ void SceneGeometryResourceManager::addGeometry(std::string newGeometryName, std:
 //	Update the Geometry Data of the the specified name. 
 void SceneGeometryResourceManager::updateGeometry(std::string currentGeometryName, std::shared_ptr<GeometryData> newGeometryData)
 {
-	auto geometryIterator = mapNameToGeometryData.find(currentGeometryName);
+	auto geometryi = mapNameToGeometryData.find(currentGeometryName);
 
-	if (geometryIterator != mapNameToGeometryData.end())
+	if (geometryi != mapNameToGeometryData.end())
 	{
-		geometryIterator->second = newGeometryData;
+		geometryi->second = newGeometryData;
 		std::shared_ptr<ResourceEvent> newEvent = std::make_shared<ResourceEvent>(ResourceType::GEOMETRY_RESOURCE, ResourceEventType::RESOURCE_UPDATED, "GEOMETRY_MANAGER", currentGeometryName, newGeometryData);
 		sceneResourceManager.lock()->dispatchEventToEventQueue(newEvent);
 	}
@@ -89,17 +88,16 @@ void SceneGeometryResourceManager::updateGeometry(std::string currentGeometryNam
 //	Return a pointer to the Geometry of the specified name.
 std::shared_ptr<GeometryData> SceneGeometryResourceManager::getGeometry(std::string currentGeometryName)
 {
-	auto geometryIterator = mapNameToGeometryData.find(currentGeometryName);
+	auto geometryi = mapNameToGeometryData.find(currentGeometryName);
 
-	if (geometryIterator != mapNameToGeometryData.end())
+	if (geometryi != mapNameToGeometryData.end())
 	{
-		return geometryIterator->second;
+		return geometryi->second;
 	}
 	else
 	{
-		//	TO DO
 		//	Throw did not find GeometryData error.
-		throw "Error! Scene Geometry Resource Manager : Update Geometry - Geometry with the specified Name Does Not Exist!";
+		throw "Error! Scene Geometry Resource Manager : Get Geometry - Geometry with the specified Name Does Not Exist!";
 		return NULL;
 	}
 }
@@ -107,17 +105,16 @@ std::shared_ptr<GeometryData> SceneGeometryResourceManager::getGeometry(std::str
 //	Return a const pointer to the Geometry of the specified name.
 std::shared_ptr<const GeometryData> SceneGeometryResourceManager::viewGeometry(std::string currentGeometryName) const
 {
-	auto geometryIterator = mapNameToGeometryData.find(currentGeometryName);
+	auto geometryi = mapNameToGeometryData.find(currentGeometryName);
 
-	if (geometryIterator != mapNameToGeometryData.end())
+	if (geometryi != mapNameToGeometryData.end())
 	{
-		return geometryIterator->second;
+		return geometryi->second;
 	}
 	else
 	{
-		//	TO DO
 		//	Throw did not find GeometryData error.
-		throw "Error! Scene Geometry Resource Manager : Update Geometry - Geometry with the specified Name Does Not Exist!";
+		throw "Error! Scene Geometry Resource Manager : View Geometry - Geometry with the specified Name Does Not Exist!";
 		return NULL;
 	}
 }
@@ -125,9 +122,9 @@ std::shared_ptr<const GeometryData> SceneGeometryResourceManager::viewGeometry(s
 //	Delete the Geometry Data of the specified name.
 void SceneGeometryResourceManager::deleteGeometry(std::string deadGeometryName)
 {
-	auto geometryIterator = mapNameToGeometryData.find(deadGeometryName);
+	auto geometryi = mapNameToGeometryData.find(deadGeometryName);
 
-	if (geometryIterator != mapNameToGeometryData.end())
+	if (geometryi != mapNameToGeometryData.end())
 	{
 		mapNameToGeometryData.erase(deadGeometryName);
 		std::shared_ptr<ResourceEvent> newEvent = std::make_shared<ResourceEvent>(ResourceType::GEOMETRY_RESOURCE, ResourceEventType::RESOURCE_DESTROYED, "GEOMETRY_MANAGER", deadGeometryName, nullptr);
@@ -135,8 +132,7 @@ void SceneGeometryResourceManager::deleteGeometry(std::string deadGeometryName)
 	}
 	else
 	{
-		//	TO DO
 		//	Throw did not find GeometryData error.
-		throw "Error! Scene Geometry Resource Manager : Update Geometry - Geometry with the specified Name Does Not Exist!";
+		throw "Error! Scene Geometry Resource Manager : Delete Geometry - Geometry with the specified Name Does Not Exist!";
 	}
 }

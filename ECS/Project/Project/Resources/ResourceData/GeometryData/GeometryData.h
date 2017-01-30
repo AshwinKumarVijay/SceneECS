@@ -51,13 +51,18 @@ public:
 	//	View the associated Geometry Texture Data.
 	const std::vector<VertexTextureData> & viewGeometryTextureData() const;
 
-	//	Return the Geometry Description Representation.
-	int getGeometryDescriptionRepresentation() const;
+	//	
+	unsigned int getHasVertexData() const;
+	unsigned int getHasVertexTextureData() const;
+	unsigned int getHasVertexTangentBitangentData() const;
 
 private:
 
-	//	The Type of the Geometry : 0 - NO VERTEX INFORMATION, 1 - VERTEX BASIC DATA, 2 - VERTEX TANGENT BITANGENT DATA, 4 - VERTEX TEXTURE COORDINATES
-	unsigned int geometryDescription;
+	//	The Geometry Data Type.
+	unsigned int hasGeometryVertexData = 0;
+	unsigned int hasGeometryVertexTextureData = 0;
+	unsigned int hasGeometryVertexTangentBitangentData = 0;
+
 
 	//	The type of geometry represented.
 	GLenum geometryDrawType;
@@ -68,11 +73,10 @@ private:
 	//	The Vertices of this geometry.
 	std::vector<Vertex> geometryVertices;
 
-	//	The Vertex Normal Data of this Geometry.
-	std::vector<VertexNormalData> geometryNormalData;
-
 	//	The Vertex Texture Data of this Geometry.
 	std::vector<VertexTextureData> geometryTextureData;
 
+	//	The Vertex Normal Data of this Geometry.
+	std::vector<VertexNormalData> geometryNormalData;
 };
 

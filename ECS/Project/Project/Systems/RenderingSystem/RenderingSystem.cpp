@@ -494,10 +494,12 @@ void RenderingSystem::createLight(const long int & entityID)
 
 		newLightData->lightEnabledShadowLightType = glm::vec4(1.0, 1.0, 1.0, 0.0);
 		newLightData->lightPosition = (*(transformComponent->viewTransform()->getHierarchyTransformMatrix())) * glm::vec4(0.0, 00.0, 00.0, 1.0);
-		newLightData->lightColorAndLightIntensity = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		newLightData->lightConeDirection = glm::vec4(0.0, 0.0, 0.0, 0.0);
-		newLightData->lightDistanceAttenuation = glm::vec4(0.0, 0.0, 0.0, 0.0);
+		newLightData->lightColorAndLightIntensity = lightComponent->getLightColorAndIntensity();
+		newLightData->lightDistanceAttenuation = lightComponent->getLightDistanceAttenuation();
 
+		//	
+		newLightData->lightConeDirection = glm::vec4(0.0, 0.0, 0.0, 0.0);
+		newLightData->spotCosCutOffAndExponent = glm::vec4(0.0, 0.0, 0.0, 0.0);
 
 		renderer->addLight(std::to_string(entityID), newLightData);
 	}
@@ -511,9 +513,19 @@ void RenderingSystem::updateLight(const long int & entityID)
 
 	if (transformComponent != NULL && lightComponent != NULL)
 	{
+		//	Update the Light Data Associated With the Entity.
 		std::shared_ptr<RendererLightData> newLightData = std::make_shared<RendererLightData>();
 
-		//	renderer->updateLight(std::to_string(entityID), newLightData);
+		newLightData->lightEnabledShadowLightType = glm::vec4(1.0, 1.0, 1.0, 0.0);
+		newLightData->lightPosition = (*(transformComponent->viewTransform()->getHierarchyTransformMatrix())) * glm::vec4(0.0, 00.0, 00.0, 1.0);
+		newLightData->lightColorAndLightIntensity = lightComponent->getLightColorAndIntensity();
+		newLightData->lightDistanceAttenuation = lightComponent->getLightDistanceAttenuation();
+
+		//	
+		newLightData->lightConeDirection = glm::vec4(0.0, 0.0, 0.0, 0.0);
+		newLightData->spotCosCutOffAndExponent = glm::vec4(0.0, 0.0, 0.0, 0.0);
+
+		renderer->updateLight(std::to_string(entityID), newLightData);
 	}
 
 }
@@ -539,7 +551,9 @@ void RenderingSystem::createGeometry(const std::string & newGeometryName, std::s
 
 	newRendererGeometryData->geometryType = newGeometryName;
 
-	newRendererGeometryData->geometryDescriptionRepresentation = newGeometryData->getGeometryDescriptionRepresentation();
+	newRendererGeometryData->hasGeometryVertexData = newGeometryData->getHasVertexData();
+	newRendererGeometryData->hasGeometryVertexTextureData = newGeometryData->getHasVertexTextureData();
+	newRendererGeometryData->hasGeometryVertexTangentBitangentData = newGeometryData->getHasVertexTangentBitangentData();
 	newRendererGeometryData->geometryDrawType = newGeometryData->getGeometryDrawType();
 
 	newRendererGeometryData->indicesArray = newGeometryData->viewGeometryIndices();
@@ -559,7 +573,10 @@ void RenderingSystem::updateGeometry(const std::string & currentGeometryName, st
 
 	updatedRendererGeometryData->geometryType = currentGeometryName;
 
-	updatedRendererGeometryData->geometryDescriptionRepresentation = updatedGeometryData->getGeometryDescriptionRepresentation();
+	updatedRendererGeometryData->hasGeometryVertexData = updatedGeometryData->getHasVertexData();
+	updatedRendererGeometryData->hasGeometryVertexTextureData = updatedGeometryData->getHasVertexTextureData();
+	updatedRendererGeometryData->hasGeometryVertexTangentBitangentData = updatedGeometryData->getHasVertexTangentBitangentData();
+
 	updatedRendererGeometryData->geometryDrawType = updatedGeometryData->getGeometryDrawType();
 
 	updatedRendererGeometryData->indicesArray = updatedGeometryData->viewGeometryIndices();
@@ -583,16 +600,19 @@ void RenderingSystem::createMaterial(const std::string & newMaterialName, std::s
 {
 	std::shared_ptr<RendererMaterialData> newRendererMaterialData = std::make_shared<RendererMaterialData>();
 
-	newRendererMaterialData->diffuseAlbedo = newMaterialData->diffuseAlbdeo;
-	newRendererMaterialData->specularAlbedo = newMaterialData->specularAlbedo;
-	newRendererMaterialData->emissiveColor = newMaterialData->emissiveColor;
-	newRendererMaterialData->metallicRoughnessFresnelOpacity = newMaterialData->metallicRoughnessFresnelOpacity;
+	//	Copy over the Material Data.
+	newRendererMaterialData->diffuseAlbedo = newMaterialData->getDiffuseAlbedo();
+	newRendererMaterialData->specularAlbedo = newMaterialData->getSpecularAlbedo();
+	newRendererMaterialData->emissiveColor = newMaterialData->getEmissiveColor();
+	newRendererMaterialData->metallicRoughnessFresnelOpacity = newMaterialData->getMRFO();
 
-	newRendererMaterialData->diffuseAlbedoMap = newMaterialData->DiffuseAlbedoMap;
-	newRendererMaterialData->specularAlbedoMap = newMaterialData->SpecularAlbedoMap;
-	newRendererMaterialData->normalMap = newMaterialData->NormalMap;
-	newRendererMaterialData->occlusionMap = newMaterialData->OcclusionMap;
+	//	Copy over the Material Texture Data.
+	newRendererMaterialData->diffuseAlbedoTexture = newMaterialData->diffuseAlbedoTexture;
+	newRendererMaterialData->specularAlbedoTexture = newMaterialData->specularAlbedoTexture;
+	newRendererMaterialData->normalTexture = newMaterialData->normalTexture;
+	newRendererMaterialData->occlusionTexture = newMaterialData->occlusionTexture;
 
+	//	Add the Material to the Renderer.
 	renderer->addMaterial(newMaterialName, newRendererMaterialData);
 }
 
@@ -601,15 +621,15 @@ void RenderingSystem::updateMaterial(const std::string & currentMaterialName, st
 {
 	std::shared_ptr<RendererMaterialData> updatedRendererMaterialData = std::make_shared<RendererMaterialData>();
 
-	updatedRendererMaterialData->diffuseAlbedo = updatedMaterialData->diffuseAlbdeo;
-	updatedRendererMaterialData->specularAlbedo = updatedMaterialData->specularAlbedo;
-	updatedRendererMaterialData->emissiveColor = updatedMaterialData->emissiveColor;
-	updatedRendererMaterialData->metallicRoughnessFresnelOpacity = updatedMaterialData->metallicRoughnessFresnelOpacity;
+	updatedRendererMaterialData->diffuseAlbedo = updatedMaterialData->getDiffuseAlbedo();
+	updatedRendererMaterialData->specularAlbedo = updatedMaterialData->getSpecularAlbedo();
+	updatedRendererMaterialData->emissiveColor = updatedMaterialData->getEmissiveColor();
+	updatedRendererMaterialData->metallicRoughnessFresnelOpacity = updatedMaterialData->getMRFO();
 
-	updatedRendererMaterialData->diffuseAlbedoMap = updatedMaterialData->DiffuseAlbedoMap;
-	updatedRendererMaterialData->specularAlbedoMap = updatedMaterialData->SpecularAlbedoMap;
-	updatedRendererMaterialData->normalMap = updatedMaterialData->NormalMap;
-	updatedRendererMaterialData->occlusionMap = updatedMaterialData->OcclusionMap;
+	updatedRendererMaterialData->diffuseAlbedoTexture = updatedMaterialData->diffuseAlbedoTexture;
+	updatedRendererMaterialData->specularAlbedoTexture = updatedMaterialData->specularAlbedoTexture;
+	updatedRendererMaterialData->normalTexture = updatedMaterialData->normalTexture;
+	updatedRendererMaterialData->occlusionTexture = updatedMaterialData->occlusionTexture;
 
 	renderer->updateMaterial(currentMaterialName, updatedRendererMaterialData);
 }

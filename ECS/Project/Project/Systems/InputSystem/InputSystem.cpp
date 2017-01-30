@@ -55,7 +55,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			//	Move Forward.
 			case InputType::KEY_W:
 			{
-				std::cout << "Move Forward." << std::endl;
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::MOVE_FORWARD, "INPUT_SYSTEM");
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
 				break;
@@ -64,7 +63,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			//	Move Backward.
 			case InputType::KEY_S:
 			{
-				std::cout << "Move Backward." << std::endl;
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::MOVE_BACKWARD, "INPUT_SYSTEM");
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
 				break;
@@ -73,7 +71,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			//	Move Left.
 			case InputType::KEY_A:
 			{
-				std::cout << "Move Left." << std::endl;
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::MOVE_LEFT, "INPUT_SYSTEM");
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
 				break;
@@ -82,7 +79,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			//	Move Right.
 			case InputType::KEY_D:
 			{
-				std::cout << "Move Right." << std::endl;
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::MOVE_RIGHT, "INPUT_SYSTEM");
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
 				break;
@@ -91,7 +87,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			//	Yaw Left.
 			case InputType::KEY_Q:
 			{
-				std::cout << "Yaw Left." << std::endl;
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::YAW_LEFT, "INPUT_SYSTEM");
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
 				break;
@@ -100,7 +95,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			//	Yaw Right.
 			case InputType::KEY_E:
 			{
-				std::cout << "Yaw Right." << std::endl;
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::YAW_RIGHT, "INPUT_SYSTEM");
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
 				break;
@@ -110,7 +104,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			//	Roll left.
 			case InputType::KEY_LEFT:
 			{
-				std::cout << "Roll Left." << std::endl;
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::ROLL_LEFT, "INPUT_SYSTEM");
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
 				break;
@@ -119,7 +112,6 @@ void InputSystem::processInput(const InputType & newInputType, const InputEventT
 			//	Roll Right.
 			case InputType::KEY_RIGHT:
 			{
-				std::cout << "Roll Right." << std::endl;
 				std::shared_ptr<InteractionEvent> newInteractionEvent = std::make_shared<InteractionEvent>(InteractionEventType::ROLL_RIGHT, "INPUT_SYSTEM");
 				getDispatcher()->dispatchToEventQueue(newInteractionEvent);
 				break;

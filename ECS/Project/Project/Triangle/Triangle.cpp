@@ -3,9 +3,9 @@
 //	Default Triangle Constructor.
 Triangle::Triangle(glm::vec3 newA, glm::vec3 newB, glm::vec3 newC)
 {
-	a = newA;
-	b = newB;
-	c = newC;
+	vertexA = newA;
+	vertexB = newB;
+	vertexC = newC;
 }
 
 //	Default Triangle Destructor.
@@ -15,25 +15,25 @@ Triangle::~Triangle()
 }
 
 //	Compute and Return the Normal of this Triangle.
-glm::vec3 Triangle::computeFaceNormal()
+glm::vec3 Triangle::getTriangleNormal()
 {
-	glm::vec3 aTob = glm::normalize(b - a);
-	glm::vec3 aToc = glm::normalize(c - a);
+	glm::vec3 aTob = glm::normalize(vertexB - vertexA);
+	glm::vec3 aToc = glm::normalize(vertexC - vertexA);
 
 	return glm::normalize(glm::cross(aTob, aToc));
 }
 
-glm::vec3 Triangle::getA()
+glm::vec3 Triangle::getVertexA()
 {
-	return a;
+	return vertexA;
 }
 
-glm::vec3 Triangle::getB()
+glm::vec3 Triangle::getVertexB()
 {
-	return b;
+	return vertexB;
 }
 
-glm::vec3 Triangle::getC()
+glm::vec3 Triangle::getVertexC()
 {
-	return c;
+	return vertexC;
 }

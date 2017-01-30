@@ -19,7 +19,6 @@ void RendererTextureManager::addTexture(std::string newTextureName, std::shared_
 	//	Renderer Texture Data.
 	std::shared_ptr<RendererTextureData> newRendererTextureData = std::make_shared<RendererTextureData>();
 
-	//	Set the Origin to be the Lower Left of the Image. This ensures (0,0) to be the lower left pixel.
 	newRendererTextureData->textureType = newTextureData->getTextureType();
 	newRendererTextureData->textureWidth = newTextureData->viewTextureBufferData(0)->getWidth();
 	newRendererTextureData->textureHeight = newTextureData->viewTextureBufferData(0)->getHeight();
@@ -79,13 +78,13 @@ void RendererTextureManager::addTexture(std::string newTextureName, std::shared_
 void RendererTextureManager::updateTexture(std::string currentTextureName, std::shared_ptr<const TextureData> newTextureData)
 {
 	//	Find the Texture Data associated with the requested texture name.
-	auto itr = mapNameToTextureData.find(currentTextureName);
+	auto textureitr = mapNameToTextureData.find(currentTextureName);
 
 	//	Check if there is actually any texture data associated wtih the texture name.
-	if (itr != mapNameToTextureData.end())
+	if (textureitr != mapNameToTextureData.end())
 	{
 		//	Bind it to the appropriate location.
-		glBindTexture(GL_TEXTURE_2D, itr->second->textureID);
+		glBindTexture(GL_TEXTURE_2D, textureitr->second->textureID);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, newTextureData->viewTextureBufferData(0)->getWidth(), newTextureData->viewTextureBufferData(0)->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, newTextureData->viewTextureBufferData(0)->viewTextureBufferData());
 		//	Bind it to the appropriate location.
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -100,13 +99,13 @@ void RendererTextureManager::updateTexture(std::string currentTextureName, std::
 std::shared_ptr<const RendererTextureData> RendererTextureManager::viewTexture(std::string requestedTextureName) const
 {
 	//	Find the Texture Data associated with the requested texture name.
-	auto itr = mapNameToTextureData.find(requestedTextureName);
+	auto textureitr = mapNameToTextureData.find(requestedTextureName);
 
 	//	Check if there is actually any texture data associated wtih the texture name.
-	if (itr != mapNameToTextureData.end())
+	if (textureitr != mapNameToTextureData.end())
 	{
 		//	Returh the Data.
-		return itr->second;
+		return textureitr->second;
 	}
 	else
 	{
@@ -119,12 +118,12 @@ std::shared_ptr<const RendererTextureData> RendererTextureManager::viewTexture(s
 void RendererTextureManager::deleteTexture(std::string deadTextureName)
 {
 	//	Find the Texture Data associated with the texture name.
-	auto itr = mapNameToTextureData.find(deadTextureName);
+	auto textureitr = mapNameToTextureData.find(deadTextureName);
 
 	//	Check if there is actually any texture data associated wtih the texture name.
-	if (itr != mapNameToTextureData.end())
+	if (textureitr != mapNameToTextureData.end())
 	{
-
+		mapNameToTextureData.erase(textureitr);
 	}
 	else
 	{

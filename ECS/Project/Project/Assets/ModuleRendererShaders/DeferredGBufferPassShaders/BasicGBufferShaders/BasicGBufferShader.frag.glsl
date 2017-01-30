@@ -30,7 +30,7 @@ layout (location = 27) uniform vec4 u_emssionColorAndIntensity;
 layout (location = 28) uniform vec4 u_metallicnessRoughnessFresnelOpacity;
 
 //	VERTEX ATTRIBUTES
-//	VERTEX POSITION, VERTEX NORMAL, VERTEX TANGENT, VERTEX BITANGENT.
+//	VERTEX POSITION, VERTEX NORMAL, VERTEX COLOR.
 layout (location = 0) in vec4 v_vertexPosition;
 layout (location = 1) in vec3 v_vertexNormal;
 layout (location = 2) in vec4 v_vertexColor;

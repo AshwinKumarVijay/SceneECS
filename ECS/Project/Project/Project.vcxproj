@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Systems\CameraControlSystem\CameraControlSystem.cpp" />
     <ClCompile Include="ECS\ComponentMaker\ComponentMaker.cpp" />
     <ClCompile Include="ECS\MainResourceManager\MainResourceManager.cpp" />
     <ClCompile Include="Components\LightComponent\LightComponent.cpp" />
@@ -164,7 +165,7 @@
     <ClCompile Include="Renderers\ModuleRenderer\ModuleRenderer.cpp" />
     <ClCompile Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurModule.cpp" />
     <ClCompile Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.cpp" />
-    <ClCompile Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.cpp" />
+    <ClCompile Include="Renderers\RendererModules\SSAOModule\SSAOModule.cpp" />
     <ClCompile Include="Components\SelectionComponent\SelectionComponent.cpp" />
     <ClCompile Include="Components\MovementResponseComponent\MovementResponseComponent.cpp" />
     <ClCompile Include="Renderers\RendererModules\RendererModule.cpp" />
@@ -183,13 +184,13 @@
     <ClCompile Include="SceneECS\SceneMaker\SceneMaker.cpp" />
     <ClCompile Include="SceneECS\SceneResourceManager\SceneResourceRequest\SceneResourceRequest.cpp" />
     <ClCompile Include="SceneECS\SceneResourceManager\SceneShaderResourceManager\SceneShaderResourceManager.cpp" />
+    <ClCompile Include="SceneECS\SceneResourceManager\SceneTextureResourceManager\SceneTextureResource\SceneTextureResource.cpp" />
     <ClCompile Include="Systems\DebugSystem\DebugSystem.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.cpp" />
     <ClCompile Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.cpp" />
     <ClCompile Include="RDFP\RDFP.cpp" />
     <ClCompile Include="RDFP\ResourceDescription.cpp" />
     <ClCompile Include="Renderers\Sampler\Sampler.cpp" />
-    <ClCompile Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.cpp" />
     <ClCompile Include="Systems\InputSystem\InputSystem.cpp" />
     <ClCompile Include="Events\InteractionEvent\InteractionEvent.cpp" />
     <ClCompile Include="Systems\CameraSystem\CameraSystem.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="Renderers\VAOStorage\VAOStorage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Systems\CameraControlSystem\CameraControlSystem.h" />
     <ClInclude Include="ECS\ComponentMaker\ComponentMaker.h" />
     <ClInclude Include="ECS\MainResourceManager\MainResourceManager.h" />
     <ClInclude Include="Components\LightComponent\LightComponent.h" />
@@ -247,10 +249,9 @@
     <ClInclude Include="Renderers\RendererModules\GBufferModule\GBufferModule.h" />
     <ClInclude Include="Renderers\RendererModules\LightsModule\LightsModule.h" />
     <ClInclude Include="Renderers\ModuleRenderer\ModuleRenderer.h" />
-    <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AOBS.h" />
     <ClInclude Include="Renderers\RendererModules\GaussianBlurRendererModule\GaussianBlurModule.h" />
     <ClInclude Include="Renderers\RendererModules\BloomRendererModule\BloomRendererModule.h" />
-    <ClInclude Include="Renderers\RendererModules\AmbientOcclusionRendererModule\AmbientOcclusionRendererModule.h" />
+    <ClInclude Include="Renderers\RendererModules\SSAOModule\SSAOModule.h" />
     <ClInclude Include="Components\SelectionComponent\SelectionComponent.h" />
     <ClInclude Include="Components\MovementResponseComponent\MovementResponseComponent.h" />
     <ClInclude Include="Renderers\RendererModules\RendererModule.h" />
@@ -272,6 +273,7 @@
     <ClInclude Include="SceneECS\SceneMaker\SceneMaker.h" />
     <ClInclude Include="SceneECS\SceneResourceManager\SceneResourceRequest\SceneResourceRequest.h" />
     <ClInclude Include="SceneECS\SceneResourceManager\SceneShaderResourceManager\SceneShaderResourceManager.h" />
+    <ClInclude Include="SceneECS\SceneResourceManager\SceneTextureResourceManager\SceneTextureResource\SceneTextureResource.h" />
     <ClInclude Include="Systems\DebugSystem\DebugSystem.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventDispatcher\EventDispatcher.h" />
     <ClInclude Include="ECS\DispatcherReceiver\EventReceiver\EventReceiver.h" />
@@ -279,7 +281,6 @@
     <ClInclude Include="RDFP\ResourceDescription.h" />
     <ClInclude Include="Renderers\Sampler\Sampler.h" />
     <ClInclude Include="RNGs\RNGs.h" />
-    <ClInclude Include="Systems\InteractionMovementResponseSystem\InteractionMovementResponseSystem.h" />
     <ClInclude Include="Systems\InputSystem\InputSystem.h" />
     <ClInclude Include="Events\InteractionEvent\InteractionEvent.h" />
     <ClInclude Include="Systems\CameraSystem\CameraSystem.h" />
@@ -365,8 +366,16 @@
     <Text Include="Assets\Shaders\VERTEX SHADERS\PHONG_MATERIAL_VERTEX_SHADER.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\ModuleRendererShaders\DeferredGBufferPassShaders\DSTGBufferShaders\DSTGBufferShader.frag.glsl" />
+    <None Include="Assets\ModuleRendererShaders\DeferredGBufferPassShaders\DSTGBufferShaders\DSTGBufferShader.vert.glsl" />
+    <None Include="Assets\ModuleRendererShaders\DeferredGBufferPassShaders\DTGBufferShaders\DTGBufferShader.frag.glsl" />
+    <None Include="Assets\ModuleRendererShaders\DeferredGBufferPassShaders\DTGBufferShaders\DTGBufferShader.vert.glsl" />
+    <None Include="Assets\ModuleRendererShaders\DeferredGBufferPassShaders\STGBufferShaders\STGBufferShader.frag.glsl" />
+    <None Include="Assets\ModuleRendererShaders\DeferredGBufferPassShaders\STGBufferShaders\STGBufferShader.vert.glsl" />
     <None Include="Assets\ModuleRendererShaders\PostProcessShaders\HDRShaders\HDR.frag.glsl" />
     <None Include="Assets\ModuleRendererShaders\PostProcessShaders\HDRShaders\HDR.vert.glsl" />
+    <None Include="Assets\ModuleRendererShaders\SSAOShaders\SSAO.frag.glsl" />
+    <None Include="Assets\ModuleRendererShaders\SSAOShaders\SSAO.vert.glsl" />
     <None Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\InstancedBasicGBufferShader\InstancedBasicGBufferShader.frag.glsl" />
     <None Include="Assets\NewShaders\DeferredRenderingShaders\GBufferPassShaders\InstancedBasicGBufferShader\InstancedBasicGBufferShader.vert.glsl" />
     <None Include="Assets\NewShaders\DeferredRenderingShaders\LightingPassShaders\BasicLightingShader\BasicLightingShader.frag.glsl" />

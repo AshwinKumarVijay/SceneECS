@@ -8,12 +8,12 @@
 #Component #Add TowersFloor Geometry
 #Component #Add TowersFloor Rendering
 
-#Component #Update TowersFloor Geometry Cube
-#Component #Update TowersFloor Rendering Material Light_Blue_Material
-#Component #Update TowersFloor Rendering ShadingType OPAQUE_BASIC
+#Component #Update TowersFloor Geometry GreenVat1
+#Component #Update TowersFloor Rendering Material GreenVat1_Material_0
+#Component #Update TowersFloor Rendering ShadingType OPAQUE_DIFFUSE_TEXTURE
 
 #Component #Update TowersFloor Transform RotateBy 0.0 1.0 0.0 0.0
-#Component #Update TowersFloor Transform ScaleBy 2.0 0.5 2.0
+#Component #Update TowersFloor Transform ScaleBy 0.5 0.5 0.5
 #Component #Update TowersFloor Transform TranslateBy 0.0, 0.0, 0.0
 
 

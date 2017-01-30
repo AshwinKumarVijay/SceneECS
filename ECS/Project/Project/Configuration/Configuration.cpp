@@ -67,8 +67,8 @@ std::string Configuration::getProperty(const std::string & propertyName) const
 //	Default Configuration Constructor.
 Configuration::Configuration()
 {
-	properties["RESOLUTION WIDTH"] = std::to_string(1280);
-	properties["RESOLUTION HEIGHT"] = std::to_string(720);
+	properties["RESOLUTION WIDTH"] = std::to_string(1920);
+	properties["RESOLUTION HEIGHT"] = std::to_string(1080);
 }
 
 

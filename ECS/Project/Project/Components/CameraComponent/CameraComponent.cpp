@@ -16,7 +16,7 @@ CameraComponent::CameraComponent()
 	aspectRatio = 1920.0f / 1080.0f;
 
 	//	Field of View.
-	FOV = glm::pi<float>() / 4.0f;
+	FOV = glm::pi<float>() / 3.0f;
 
 	//	Set this Camera to be inactive by default.
 	isActive = false;

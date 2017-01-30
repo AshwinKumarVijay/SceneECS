@@ -13,18 +13,18 @@ public:
 	virtual ~Triangle();
 
 	//	Compute and return the Normal for this Face.
-	glm::vec3 computeFaceNormal();
+	glm::vec3 getTriangleNormal();
 
 	//	Return the Vertex.
-	glm::vec3 getA();
-	glm::vec3 getB();
-	glm::vec3 getC();
+	glm::vec3 getVertexA();
+	glm::vec3 getVertexB();
+	glm::vec3 getVertexC();
 
 private:
 
-	glm::vec3 a;
-	glm::vec3 b;
-	glm::vec3 c;
+	glm::vec3 vertexA;
+	glm::vec3 vertexB;
+	glm::vec3 vertexC;
 
 
 };

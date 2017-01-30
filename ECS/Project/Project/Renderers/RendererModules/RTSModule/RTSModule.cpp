@@ -11,7 +11,7 @@
 #include "../../RendererResourceManagers/RendererShaderManager/RendererShaderData/RendererShaderData.h"
 
 //	Default RTSModule Constructor.
-RTSModule::RTSModule(std::shared_ptr<Renderer> newModuleRenderer, const unsigned int & newSourceTextureID) : RendererModule(newModuleRenderer)
+RTSModule::RTSModule(std::shared_ptr<Renderer> newRenderer, const unsigned int & newSourceTextureID) : RendererModule(newRenderer)
 {
 	sourceTextureID = newSourceTextureID;
 
@@ -28,7 +28,7 @@ RTSModule::RTSModule(std::shared_ptr<Renderer> newModuleRenderer, const unsigned
 	newRendererShaderData->addPropertyValue("Fragment Shader Source", fsSource);
 
 	//	Add the RendererShaderData to the Module Renderer.
-	newModuleRenderer->addShader(newRendererShaderData);
+	newRenderer->addShader(newRendererShaderData);
 }
 
 

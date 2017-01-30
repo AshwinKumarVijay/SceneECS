@@ -150,7 +150,7 @@ void Transform::setLookAtPoint(const glm::vec3 & newLookAtPoint)
 	//	Generate the new Look At Rotation.
 	glm::quat lookAtRotation = glm::rotation(getFowardDirection(), lookAtDirection);
 
-	//	Generate the compensating Up Rotatx	ion.
+	//	Generate the compensating Up Rotation.
 	glm::quat upRotation = glm::rotation(lookAtRotation * getUpVector(), newUp);
 
 	//	Construct the new rotation.

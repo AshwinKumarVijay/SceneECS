@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <map>
 
 #include "../RenderablesMetaData.h"
 
@@ -31,5 +32,8 @@ private:
 
 	//	The Vector of VAOs.
 	std::vector<std::shared_ptr<VAOMetaData>> VAOs;
+
+	//	The Geometry Data Type to the VAOs.
+	std::multimap<unsigned int, std::shared_ptr<VAOMetaData>> mapGeometryDataTypeToVAOs;
 };
 

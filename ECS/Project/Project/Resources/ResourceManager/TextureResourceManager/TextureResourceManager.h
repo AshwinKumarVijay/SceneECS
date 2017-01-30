@@ -43,7 +43,7 @@ private:
 	//	Map the Name to the Texture Data.
 	std::map<std::string, std::shared_ptr<TextureData>> mapNameToTextureData;
 
-	//	Texture Generator Selector
+	//	Texture Generator Selector.
 	std::shared_ptr<TextureGeneratorSelector> textureGeneratorSelector;
 
 };

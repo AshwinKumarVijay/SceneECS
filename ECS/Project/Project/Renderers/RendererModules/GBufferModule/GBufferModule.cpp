@@ -13,28 +13,14 @@
 
 
 //	Default GBufferModule Constructor.
-GBufferModule::GBufferModule(std::shared_ptr<Renderer> newModuleRenderer) : RendererModule(newModuleRenderer)
+GBufferModule::GBufferModule(std::shared_ptr<Renderer> newRenderer) : RendererModule(newRenderer)
 {
+
+	//	Create the G Buffer Shaders.
+	createGBufferShaders(newRenderer);
+
 	//	Create the G Buffer Textures and Framebuffers using the provided Scene Width and Scene Height.
-	createGBufferTexturesAndFramebuffers(newModuleRenderer->getSceneQuality().screenWidth, newModuleRenderer->getSceneQuality().screenHeight);
-
-	//	Add the Shader Type.
-	std::shared_ptr<RendererShaderData> newRendererShaderData = std::make_shared<RendererShaderData>();
-	newRendererShaderData->addPropertyValue("Shader Type", "Basic Deferred G Buffer Shader");
-	newRendererShaderData->addPropertyValue("Renderable Shader Type", "OPAQUE_BASIC");
-	newRendererShaderData->addPropertyValue("Shader Output Opacity", "False");
-	newRendererShaderData->addPropertyValue("Require Vertex Basic Data", "True");
-
-	//	Set the Vertex Shader G Buffer Source.
-	std::string vsSource = "Assets/ModuleRendererShaders/DeferredGBufferPassShaders/BasicGBufferShaders/BasicGBufferShader.vert.glsl";
-	newRendererShaderData->addPropertyValue("Vertex Shader Source", vsSource);
-
-	//	Set the Fragment Shader G Buffer Source.
-	std::string fsSource = "Assets/ModuleRendererShaders/DeferredGBufferPassShaders/BasicGBufferShaders/BasicGBufferShader.frag.glsl";
-	newRendererShaderData->addPropertyValue("Fragment Shader Source", fsSource);
-
-	//	Add the RendererShaderData to the Module Renderer.
-	newModuleRenderer->addShader(newRendererShaderData);
+	createGBufferTexturesAndFramebuffers(newRenderer->getSceneQuality().screenWidth, newRenderer->getSceneQuality().screenHeight);
 }
 
 //	Default GBufferModule Destructor.
@@ -156,6 +142,74 @@ unsigned int GBufferModule::viewEmissiveColorAndIntensityTexture() const
 unsigned int GBufferModule::viewDepthTexture() const
 {
 	return depthTexture;
+}
+
+//	Create the G Buffer Shaders.
+void GBufferModule::createGBufferShaders(std::shared_ptr<Renderer> newModuleRenderer)
+{
+	createBasicGBufferShader(newModuleRenderer);
+	createDiffuseTextureGBufferShader(newModuleRenderer);
+}
+
+//	Create the Basic G Buffer Shaders.
+void GBufferModule::createBasicGBufferShader(std::shared_ptr<Renderer> newModuleRenderer)
+{
+	//	Opaque Basic Untextured Shader.
+	//	Add the Shader Type.
+	std::shared_ptr<RendererShaderData> newRendererShaderData = std::make_shared<RendererShaderData>();
+	newRendererShaderData->addPropertyValue("Shader Type", "Basic Deferred G Buffer Shader");
+	newRendererShaderData->addPropertyValue("Renderable Shader Type", "OPAQUE_BASIC");
+	newRendererShaderData->addPropertyValue("Shader Output Opacity", "False");
+	newRendererShaderData->addPropertyValue("Require Vertex Basic Data", "True");
+
+	//	Set the Vertex Shader Source.
+	std::string vsSource = "Assets/ModuleRendererShaders/DeferredGBufferPassShaders/BasicGBufferShaders/BasicGBufferShader.vert.glsl";
+	newRendererShaderData->addPropertyValue("Vertex Shader Source", vsSource);
+
+	//	Set the Fragment Shader G Buffer Source.
+	std::string fsSource = "Assets/ModuleRendererShaders/DeferredGBufferPassShaders/BasicGBufferShaders/BasicGBufferShader.frag.glsl";
+	newRendererShaderData->addPropertyValue("Fragment Shader Source", fsSource);
+
+	//	Add the RendererShaderData to the Module Renderer.
+	newModuleRenderer->addShader(newRendererShaderData);
+}
+
+//	Create the Diffuse Texture G Buffer Shader.
+void GBufferModule::createDiffuseTextureGBufferShader(std::shared_ptr<Renderer> newModuleRenderer)
+{
+	//	Opaque Basic Textured Shader.
+	//	Add the Shader Type.
+	std::shared_ptr<RendererShaderData> newRendererShaderData = std::make_shared<RendererShaderData>();
+	newRendererShaderData->addPropertyValue("Shader Type", "Diffuse Texture Deferred G Buffer Shader");
+	newRendererShaderData->addPropertyValue("Renderable Shader Type", "OPAQUE_DIFFUSE_TEXTURE");
+	newRendererShaderData->addPropertyValue("Shader Output Opacity", "False");
+	newRendererShaderData->addPropertyValue("Require Vertex Basic Data", "True");
+	newRendererShaderData->addPropertyValue("Require Vertex Texture Data", "True");
+
+	//	Set the Vertex Shader Source.
+	std::string vsSource = "Assets/ModuleRendererShaders/DeferredGBufferPassShaders/DTGBufferShaders/DTGBufferShader.vert.glsl";
+	newRendererShaderData->addPropertyValue("Vertex Shader Source", vsSource);
+
+	//	Set the Fragment Shader Source.
+	std::string fsSource = "Assets/ModuleRendererShaders/DeferredGBufferPassShaders/DTGBufferShaders/DTGBufferShader.frag.glsl";
+	newRendererShaderData->addPropertyValue("Fragment Shader Source", fsSource);
+
+	//	Add the RendererShaderData to the Module Renderer.
+	newModuleRenderer->addShader(newRendererShaderData);
+}
+
+//	Create the Specular Texture G Buffer Shader.
+void GBufferModule::createSpecularTextureGBufferShader(std::shared_ptr<Renderer> newModuleRenderer)
+{
+
+
+}
+
+//	Create the Diffuse Specular Texture G Buffer Shader.
+void GBufferModule::createDiffuseSpecularTexturesGBufferShader(std::shared_ptr<Renderer> newModuleRenderer)
+{
+
+
 }
 
 //	Create the G Buffer Textures and Framebuffers.

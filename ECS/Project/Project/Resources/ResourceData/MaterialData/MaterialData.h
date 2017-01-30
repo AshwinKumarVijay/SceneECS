@@ -16,6 +16,47 @@ public:
 	//	Default Material Data Destructor.
 	~MaterialData();
 
+	//	Return the Diffuse Albedo.
+	glm::vec4 getDiffuseAlbedo() const;
+
+	//	Set the Diffuse Albedo.
+	void setDiffuseAlbedo(const glm::vec4 & newDiffuseAlbedo);
+
+	//	Return the Specular Albedo.
+	glm::vec4 getSpecularAlbedo() const;
+
+	//	Set the Specular Albedo.
+	void setSpecularAlbedo(const glm::vec4 & newSpecularAlbedo);
+
+	//	Return the Emissive Color.
+	glm::vec4 getEmissiveColor() const;
+
+	//	Set the Emissive Color.
+	void setEmissiveColor(const glm::vec4 & newEmissiveColor);
+
+	//	Return the MRFO.
+	glm::vec4 getMRFO() const;
+
+	//	Set the MRFO.
+	void setMRFO(const glm::vec4 & newMRFO);
+
+	//	The Diffuse Albedo Texture - No Default Diffuse Albedo Texture.
+	std::string diffuseAlbedoTexture;
+
+	//	The Specular Albedo Map - No Default Specular Albedo Map.
+	std::string specularAlbedoTexture;
+
+	//	The Metallicness, Roughness, Fresnel and Opacity.
+	std::string MRFOTexture;
+
+	//	The Normal Map - No Default Normal Map.
+	std::string normalTexture;
+
+	//	The Occlusion Map - No Default Occlusion Map.
+	std::string occlusionTexture;
+
+private:
+
 	//	The Diffuse Albedo Color.
 	glm::vec4 diffuseAlbdeo;
 
@@ -26,21 +67,5 @@ public:
 	glm::vec4 emissiveColor;
 
 	//	Metallic, Roughness and Opacity.
-	glm::vec4 metallicRoughnessFresnelOpacity;
-
-	//	The Diffuse Albedo Map - No Default Diffuse Albedo Map.
-	std::string DiffuseAlbedoMap;
-
-	//	The Specular Albedo Map - No Default Specular Albedo Map.
-	std::string SpecularAlbedoMap;
-
-	//	The Metallicness, Roughness, Fresnel and Opacity.
-	std::string MRFOMap;
-
-	//	The Normal Map - No Default Normal Map.
-	std::string NormalMap;
-
-	//	The Occlusion Map - No Default Occlusion Map.
-	std::string OcclusionMap;
-
+	glm::vec4 mrfo;
 };

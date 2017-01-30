@@ -4,6 +4,7 @@
 #include "../RendererModules/GBufferModule/GBufferModule.h"
 #include "../RendererModules/LightsModule/LightsModule.h"
 #include "../RendererModules/ShadowsModule/ShadowsModule.h"
+#include "../RendererModules/SSAOModule/SSAOModule.h"
 #include "../RendererModules/DPassLightingModule/DPassLightingModule.h"
 #include "../RendererModules/FPassLightingModule/FPassLightingModule.h"
 #include "../RendererModules/RTSModule/RTSModule.h"
@@ -203,7 +204,7 @@ void ModuleRenderer::addShader(std::shared_ptr<RendererShaderData> newShaderData
 	std::string newShaderType;
 	if (newShaderData->getPropertyValue("Renderable Shader Type", newShaderType))
 	{
-		renderableManager->addShaderType("OPAQUE_BASIC");
+		renderableManager->addShaderType(newShaderType);
 	}
 }
 
@@ -276,6 +277,10 @@ std::shared_ptr<const RendererShaderData> ModuleRenderer::getRendererShaderDataF
 	{
 		return getShaderManager()->viewShaderData("Basic Deferred G Buffer Shader");
 	}
+	else if (shaderType == "OPAQUE_DIFFUSE_TEXTURE")
+	{
+		return getShaderManager()->viewShaderData("Diffuse Texture Deferred G Buffer Shader");
+	}
 
 	return NULL;
 }
@@ -340,7 +345,7 @@ void ModuleRenderer::renderRenderablesOfShaderType(const std::string & shaderTyp
 					uploadMaterialData(rendererShaderData, currentMaterialData->diffuseAlbedo, currentMaterialData->specularAlbedo, currentMaterialData->emissiveColor, currentMaterialData->metallicRoughnessFresnelOpacity);
 
 					//	Upload the Shader Material Texture Data.
-					uploadMaterialTextureData(rendererShaderData, currentMaterialData->diffuseAlbedoMap, currentMaterialData->specularAlbedoMap, currentMaterialData->MRFOMap, currentMaterialData->normalMap, currentMaterialData->occlusionMap);
+					uploadMaterialTextureData(rendererShaderData, currentMaterialData->diffuseAlbedoTexture, currentMaterialData->specularAlbedoTexture, currentMaterialData->MRFOTexture, currentMaterialData->normalTexture, currentMaterialData->occlusionTexture);
 
 					//	
 					for (int i = 0; i < currentRenderableTypeBatch->renderableTypeBatch->getTransformMatrices().size(); i++)
@@ -557,8 +562,62 @@ void ModuleRenderer::uploadMaterialData(const RendererShaderData & rendererShade
 }
 
 //	Upload the Material Texture Data to the Shading Pipeline.
-void ModuleRenderer::uploadMaterialTextureData(const RendererShaderData & rendererShaderData, const std::string & diffuseAlbedoMap, const std::string & specularAlbedoMap, const std::string & MRFOMap, const std::string & NormalMap, const std::string & OcclusionMap)
+void ModuleRenderer::uploadMaterialTextureData(const RendererShaderData & rendererShaderData, const std::string & diffuseAlbedoTexture, const std::string & specularAlbedoTexture, const std::string & MRFOTexture, const std::string & normalTexture, const std::string & occlusionTexture)
 {
+	//	Get the Diffuse Albedo Texture.
+	int u_diffuseAlbedoTexture = -1;
+	if (rendererShaderData.getUniformLocation("u_diffuseAlbedoTexture", u_diffuseAlbedoTexture))
+	{
+		if (u_diffuseAlbedoTexture != -1 && diffuseAlbedoTexture != "")
+		{
+			std::shared_ptr<const RendererTextureData> currentDiffuseTexture = getTextureManager()->viewTexture(diffuseAlbedoTexture);
+
+			glActiveTexture(GL_TEXTURE0 + 15);
+			glBindTexture(GL_TEXTURE_2D, currentDiffuseTexture->textureID);
+			glUniform1i(u_diffuseAlbedoTexture, 15);
+			glActiveTexture(GL_TEXTURE0);
+		}
+	}
+
+	//	Get the Specular Albedo Texture.
+	int u_specularAlbedoTexture = -1;
+	if (rendererShaderData.getUniformLocation("u_specularAlbedoTexture", u_specularAlbedoTexture))
+	{
+		if (u_specularAlbedoTexture != -1)
+		{
+
+		}
+	}
+
+	//	Get the MRFO Texture.
+	int u_mrfoTexture = -1;
+	if (rendererShaderData.getUniformLocation("u_mrfoTexture", u_mrfoTexture))
+	{
+		if (u_mrfoTexture != -1)
+		{
+
+		}
+	}
+
+	//	Get the Normal Texture.
+	int u_normalTexture = -1;
+	if (rendererShaderData.getUniformLocation("u_normalTexture", u_normalTexture))
+	{
+		if (u_normalTexture != -1)
+		{
+
+		}
+	}
+
+	//	Get the Occlusion Texture.
+	int u_occlusionTexture = -1;
+	if (rendererShaderData.getUniformLocation("u_occlusionTexture", u_occlusionTexture))
+	{
+		if (u_occlusionTexture != -1)
+		{
+
+		}
+	}
 
 }
 
@@ -673,9 +732,6 @@ void ModuleRenderer::uploadGBufferTextures(const RendererShaderData & rendererSh
 			glActiveTexture(GL_TEXTURE0);
 		}
 	}
-
-
-
 }
 
 //	Upload the Primary Post Process Textures.
@@ -819,7 +875,7 @@ void ModuleRenderer::initializeModules()
 	shadowsModule = std::make_shared<ShadowsModule>(this->shared_from_this(), lightsModule);
 
 	//	SSAO Module.
-	//	ssaoModule = std::make_shared<SSAOModule>(renderableManager);
+	ssaoModule = std::make_shared<SSAOModule>(this->shared_from_this(), gBufferModule->viewWorldSpacePositionTexture(), gBufferModule->viewWorldSpaceVertexNormalAndDepthTexture(), gBufferModule->viewAmbientColorTexture(), gBufferModule->viewDepthTexture());
 
 	//	Create the Deferred Pass Lighting Module.
 	dPassLightingModule = std::make_shared<DPassLightingModule>(this->shared_from_this(), gBufferModule, lightsModule);

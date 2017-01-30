@@ -2,7 +2,7 @@
 
 
 //	Default Bloom Renderer Module Constructor.
-BloomRendererModule::BloomRendererModule()
+BloomRendererModule::BloomRendererModule(std::shared_ptr<Renderer> newRenderer, const unsigned int & newSourceTextureID)
 {
 
 }

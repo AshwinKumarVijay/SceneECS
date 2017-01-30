@@ -36,9 +36,6 @@ public:
 	//	Load the Texture From File - uses DevIL.
 	virtual void loadTextureFromFile(std::string textureFileName, std::shared_ptr<TextureBufferData> newTextureData);
 
-	//	Create the Texture from Text.
-	virtual std::shared_ptr<TextureBufferData> createTexturefromText(const std::string & textString, const std::string & textFont, const int & fontSize);
-
 private:
 
 	//	Flag to indicate whether the initialization of the DevIL library has been completed.

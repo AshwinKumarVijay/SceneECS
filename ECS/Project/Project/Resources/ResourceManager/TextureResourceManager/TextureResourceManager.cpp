@@ -109,7 +109,7 @@ void TextureResourceManager::addTexture(std::string newTextureName, std::shared_
 	if (textureIterator != mapNameToTextureData.end())
 	{
 		//	TO DO
-		//	Throw Geometry already present error.
+		//	Throw Texture already present error.
 	}
 	else
 	{

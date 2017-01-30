@@ -6,6 +6,7 @@
 #include "../../Components/TransformComponent/TransformComponent.h"
 #include "../../Components/GeometryComponent/GeometryComponent.h"
 #include "../../Components/RenderingComponent/RenderingComponent.h"
+#include "../../Components/LightComponent/LightComponent.h"
 
 #include "../../Transform/Transform.h"
 
@@ -150,18 +151,24 @@ bool SceneMaker::runComponentCommand(const std::vector<std::string>& currentComp
 //	Add the Component 
 bool SceneMaker::addComponentCommand(const std::vector<std::string>& currentComponentCommand)
 {
+	//	Get the Entity By Name.
 	long int entityID = mapEntityNameToEntityID[currentComponentCommand[2]];
 
+	//	Get the Component Type.
 	ComponentType newComponentType = getComponentType(currentComponentCommand[3]);
 
+	//	Check if we have a valid Component Type.
 	if (newComponentType != ComponentType::NO_COMPONENT)
 	{
+		//	Add the Component To the Entity.
 		entityManager.lock()->addComponentToEntity(entityID, newComponentType);
 
+		//	Return True.
 		return true;
 	}
 	else
 	{
+		//	Return False.
 		return false;
 	}
 }
@@ -169,6 +176,7 @@ bool SceneMaker::addComponentCommand(const std::vector<std::string>& currentComp
 //	Update the Component
 bool SceneMaker::updateComponentCommand(const std::vector<std::string>& currentComponentCommand)
 {
+	//	Get the Entity By Name.
 	long int entityID = mapEntityNameToEntityID[currentComponentCommand[2]];
 
 	//	Update the Specific Type Component of the EntityID. 
@@ -178,18 +186,24 @@ bool SceneMaker::updateComponentCommand(const std::vector<std::string>& currentC
 //	Remove the Component
 bool SceneMaker::removeComponentCommand(const std::vector<std::string>& currentComponentCommand)
 {
+	//	Get the Entity By Name.
 	long int entityID = mapEntityNameToEntityID[currentComponentCommand[2]];
 
+	//	Get the Component Type.
 	ComponentType newComponentType = getComponentType(currentComponentCommand[3]);
 
+	//	Check if we have a valid Component Type.
 	if (newComponentType != ComponentType::NO_COMPONENT)
 	{
+		//	Remove the Component From the Entity.
 		entityManager.lock()->removeComponentFromEntity(entityID, newComponentType);
 
+		//	Return True.
 		return true;
 	}
 	else
 	{
+		//	Return False.
 		return false;
 	}
 }
@@ -273,6 +287,7 @@ bool SceneMaker::updateSpecificTypeComponent(const long int & entityID, const st
 //	Update the Hierarchy Type Component.
 bool SceneMaker::updateHierarchyTypeComponent(const long int & entityID, const std::vector<std::string>& currentComponentCommand)
 {
+	//	Get the Hierarchy Component for the Entity ID.
 	std::shared_ptr<HierarchyComponent> hierarchyComponent = std::dynamic_pointer_cast<HierarchyComponent>(entityManager.lock()->getComponentOfEntity(entityID, ComponentType::HIERARCHY_COMPONENT, "NO_MODULE"));
 
 	if (hierarchyComponent != NULL)
@@ -314,10 +329,13 @@ bool SceneMaker::updateHierarchyTypeComponent(const long int & entityID, const s
 //	Update the Transfomr Type Component.
 bool SceneMaker::updateTransformTypeComponent(const long int & entityID, const std::vector<std::string>& currentComponentCommand)
 {
+	//	Get the Transform Component for the Entity ID.
 	std::shared_ptr<TransformComponent> transformComponent = std::dynamic_pointer_cast<TransformComponent>(entityManager.lock()->getComponentOfEntity(entityID, ComponentType::TRANSFORM_COMPONENT, "NO_MODULE"));
 
+	//	Check if we have a valid Transform Component.
 	if (transformComponent != NULL)
 	{
+		
 		if (currentComponentCommand[4] == "RotateBy")
 		{
 			glm::vec3 axes = glm::vec3(std::stof(currentComponentCommand[5]), std::stof(currentComponentCommand[6]), std::stof(currentComponentCommand[7]));
@@ -353,6 +371,7 @@ bool SceneMaker::updateTransformTypeComponent(const long int & entityID, const s
 //	Update the Geometry Type Component.
 bool SceneMaker::updateGeometryTypeComponent(const long int & entityID, const std::vector<std::string>& currentComponentCommand)
 {
+	//	Get the Geometry Component for the Entity ID.
 	std::shared_ptr<GeometryComponent> geometryComponent = std::dynamic_pointer_cast<GeometryComponent>(entityManager.lock()->getComponentOfEntity(entityID, ComponentType::GEOMETRY_COMPONENT, "NO_MODULE"));
 
 	if (geometryComponent != NULL)
@@ -370,6 +389,7 @@ bool SceneMaker::updateGeometryTypeComponent(const long int & entityID, const st
 //	Update the Rendering Type Component.
 bool SceneMaker::updateRenderingTypeComponent(const long int & entityID, const std::vector<std::string>& currentComponentCommand)
 {
+	//	Get the Rendering Component for the Entity ID.
 	std::shared_ptr<RenderingComponent> renderingComponent = std::dynamic_pointer_cast<RenderingComponent>(entityManager.lock()->getComponentOfEntity(entityID, ComponentType::RENDERING_COMPONENT, "NO_MODULE"));
 
 	if (renderingComponent != NULL)
@@ -395,6 +415,41 @@ bool SceneMaker::updateRenderingTypeComponent(const long int & entityID, const s
 	{
 		return false;
 	}
+}
+
+//	
+bool SceneMaker::updateLightTypeComponent(const long int & entityID, const std::vector<std::string>& currentComponentCommand)
+{
+	//	Get the Light Component for the Entity ID.
+	std::shared_ptr<LightComponent> lightComponent = std::dynamic_pointer_cast<LightComponent>(entityManager.lock()->getComponentOfEntity(entityID, ComponentType::LIGHT_COMPONENT, "NO_MODULE"));
+
+	if (lightComponent != NULL)
+	{
+		if (currentComponentCommand[4] == "LightColorAndIntensity")
+		{
+			//	Extract the Light Color And Intensity.
+			std::vector<std::string> lightColorAndIntensityValues = StringModifiers::split_string(currentComponentCommand[5], " ");
+			glm::vec4 lightColorAndIntensity = glm::vec4(std::stof(lightColorAndIntensityValues[0]), std::stof(lightColorAndIntensityValues[1]), std::stof(lightColorAndIntensityValues[2]), std::stof(lightColorAndIntensityValues[3]));
+
+			//	Set the Light Color And Intensity.
+			lightComponent->setLightColorAndIntensity(lightColorAndIntensity);
+		}
+		else if(currentComponentCommand[4] == "LightDistanceAttenuation")
+		{
+			//	Extract the Light Distance Attenuation.
+			std::vector<std::string> lightDistanceAttenuationValues = StringModifiers::split_string(currentComponentCommand[5], " ");
+			glm::vec4 lightDistanceAttenuation = glm::vec4(std::stof(lightDistanceAttenuationValues[0]), std::stof(lightDistanceAttenuationValues[1]), std::stof(lightDistanceAttenuationValues[2]), std::stof(lightDistanceAttenuationValues[3]));
+
+			//	Set the Light Distance Attenuation.
+			lightComponent->setLightDistanceAttenuation(lightDistanceAttenuation);
+		}
+	}
+	else
+	{
+		return false;
+	}
+
+	return false;
 }
 
 //	Check whether we should ignore the current line.

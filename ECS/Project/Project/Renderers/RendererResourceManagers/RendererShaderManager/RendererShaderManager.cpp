@@ -325,7 +325,7 @@ void RendererShaderManager::generateShaderUniformLocations(std::shared_ptr<Rende
 	{
 		//	ENVIRONMENT MAP CUBE TEXTURE, DIFFUSE ALBEDO MAP TEXTURE, SPECULAR ALBEDO MAP TEXTURE
 		//	EMISSIVE COLOR AND INTENSITY TEXTURE, METALLIC, ROUGHNESS, FRESNEL AND OPACITY TEXTURE.
-		newShaderData->addUniformLocation("u_diffuseAlbedoMap" , glGetUniformLocation(newShaderData->getShaderID(), "u_diffuseAlbedoMap"));
+		newShaderData->addUniformLocation("u_diffuseAlbedoTexture" , glGetUniformLocation(newShaderData->getShaderID(), "u_diffuseAlbedoTexture"));
 		newShaderData->addUniformLocation("u_specularAlbedoMap",  glGetUniformLocation(newShaderData->getShaderID(), "u_specularAlbedoMap"));
 		newShaderData->addUniformLocation("u_emssionColorAndIntensityMap", glGetUniformLocation(newShaderData->getShaderID(), "u_emssionColorAndIntensityMap"));
 		newShaderData->addUniformLocation("u_metallicnessRoughnessFresnelOpacityMap", glGetUniformLocation(newShaderData->getShaderID(), "u_metallicnessRoughnessFresnelOpacityMap"));

@@ -20,7 +20,7 @@ struct SceneGeometryResourceRequest : public SceneResourceRequest
 	std::string geometryType;
 
 	//	The Type of the Geometry : 0 - NO VERTEX INFORMATION, 1 - VERTEX BASIC DATA, 2 - VERTEX TANGENT BITANGENT DATA, 4 - VERTEX TEXTURE COORDINATES
-	unsigned int geometryDescriptionRepresentation;
+	unsigned int geometryDataType;
 
 	//	The type of geometry represented.
 	GLenum geometryDrawType;
@@ -31,12 +31,11 @@ struct SceneGeometryResourceRequest : public SceneResourceRequest
 	//	The Vertices of this geometry.
 	std::shared_ptr<std::vector<Vertex>> geometryVertices;
 
-	//	The Vertex Normal Data of this Geometry.
-	std::shared_ptr<std::vector<VertexNormalData>> geometryNormalData;
-
 	//	The Vertex Texture Data of this Geometry.
 	std::shared_ptr<std::vector<VertexTextureData>> geometryTextureData;
 
+	//	The Vertex Normal Data of this Geometry.
+	std::shared_ptr<std::vector<VertexNormalData>> geometryNormalData;
 };
 
 class SceneResourceMetaData;
@@ -83,7 +82,7 @@ private:
 	//	Associated Scene Resouce Manager.
 	std::weak_ptr<SceneResourceManager> sceneResourceManager;
 
-	//	
+	//	Map the Name to the Geometry Data.
 	std::map<std::string, std::shared_ptr<GeometryData>> mapNameToGeometryData;
 
 };

@@ -4,7 +4,10 @@
 //	Default ShadowsModule Constructor.
 ShadowsModule::ShadowsModule(std::shared_ptr<Renderer> newModuleRenderer, std::shared_ptr<const LightsModule> newLightsModule) : RendererModule(newModuleRenderer)
 {
+	//	
 	lightsModule = newLightsModule;
+
+	//	Create Shadows Textures And Framebuffers.
 	createShadowsTexturesAndFramebuffers();
 }
 
@@ -30,6 +33,7 @@ void ShadowsModule::render(const float & deltaFrameTime, const float & currentFr
 	}
 }
 
+//	View the Light Shadows Module Meta Datas.
 const std::vector<LightShadowsModuleMetaData>& ShadowsModule::viewLightShadowsModuleMetaDatas() const
 {
 	return lightShadowsModuleMetaDatas;
@@ -40,9 +44,12 @@ void ShadowsModule::createShadowsTexturesAndFramebuffers()
 {
 	const std::vector<LightModuleMetaData> lightModuleMetaDatas = lightsModule.lock()->viewLightModuleMetaDatas();
 
+	//	Iterate over the Light Module MetaDatas.
 	for (int i = 0; i < lightModuleMetaDatas.size(); i++)
 	{
 		unsigned int newFramebufferObject = 0;
+
+		//	Generate the new Framebuffer Object.
 		glGenFramebuffers(1, &newFramebufferObject);
 		glBindFramebuffer(GL_FRAMEBUFFER, newFramebufferObject);
 
@@ -59,10 +66,13 @@ void ShadowsModule::createShadowsTexturesAndFramebuffers()
 		//	Bind the Default Framebuffer.
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		//	Add the Light Shadows Module.
+		//	Create the Light Shadows Module MetaData.
 		LightShadowsModuleMetaData newShadowModule;
-		newShadowModule.lightFramebufferObject = newFramebufferObject;
-		lightShadowsModuleMetaDatas.push_back(newShadowModule);
 
+		// Associate the Light Framebuffer Object.
+		newShadowModule.lightFramebufferObject = newFramebufferObject;
+
+		//	Add the Light Module Meta Datas.
+		lightShadowsModuleMetaDatas.push_back(newShadowModule);
 	}
 }

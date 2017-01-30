@@ -208,13 +208,13 @@ struct GeometryTypeMetaData
 	unsigned int vertexVBO = 0;
 	unsigned int offsetVertexVBO = 0;
 
-	//	The vertexNormalVBO and the offset into the vertexNormalVBO.
-	unsigned int vertexNormalVBO = 0;
-	unsigned int offsetVertexNormalVBO = 0;
-
 	//	The vertexTextureVBO and the offset into the vertexVBO.
 	unsigned int vertexTextureVBO = 0;
 	unsigned int offsetVertexTextureVBO = 0;
+
+	//	The vertexNormalVBO and the offset into the vertexNormalVBO.
+	unsigned int vertexNormalVBO = 0;
+	unsigned int offsetVertexNormalVBO = 0;
 
 	//	Weak Pointer to the Associated VAO Meta Data.
 	std::weak_ptr<VAOMetaData> vaoMetaData;

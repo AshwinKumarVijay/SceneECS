@@ -7,13 +7,10 @@
 #include "../../RendererResourceManagers/RendererShaderManager/RendererShaderData/RendererShaderData.h"
 
 //	Default LightsModule Constructor.
-LightsModule::LightsModule(std::shared_ptr<Renderer> newModuleRenderer) : RendererModule(newModuleRenderer)
+LightsModule::LightsModule(std::shared_ptr<Renderer> newRenderer) : RendererModule(newRenderer)
 {
-	//	Get the Renderer.
-	std::weak_ptr<Renderer> weakRenderer = getRenderer();
-
 	//	Get the Module Renderer.
-	std::shared_ptr<ModuleRenderer> moduleRenderer = std::dynamic_pointer_cast<ModuleRenderer>(weakRenderer.lock());
+	std::shared_ptr<ModuleRenderer> moduleRenderer = std::dynamic_pointer_cast<ModuleRenderer>(newRenderer);
 
 	//	Copy over the Screen Width and Screen Height Textures.
 	screenWidth = moduleRenderer->getSceneQuality().screenWidth;
@@ -220,7 +217,7 @@ void LightsModule::createLightTexturesAndFramebuffers()
 		LightModuleMetaData newLightModuleMetaData;
 
 		//	Generate the Color and Depth Textures.
-		//	Active Texture.
+		//	Active Texture 0.
 		glActiveTexture(GL_TEXTURE0 + 0);
 
 		//	Generate the Light Color Map.

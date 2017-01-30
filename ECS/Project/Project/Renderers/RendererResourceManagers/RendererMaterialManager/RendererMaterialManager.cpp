@@ -38,13 +38,13 @@ void RendererMaterialManager::addMaterial(const std::string & newMaterialName, s
 		newRendererMaterialData->metallicRoughnessFresnelOpacity = newMaterialData->metallicRoughnessFresnelOpacity;
 
 		//	Copy over the Diffuse and Specular Albedo Maps.
-		newRendererMaterialData->diffuseAlbedoMap = newMaterialData->diffuseAlbedoMap;
-		newRendererMaterialData->specularAlbedoMap = newMaterialData->specularAlbedoMap;
+		newRendererMaterialData->diffuseAlbedoTexture = newMaterialData->diffuseAlbedoTexture;
+		newRendererMaterialData->specularAlbedoTexture = newMaterialData->specularAlbedoTexture;
 
 		//	Copy over the MRFO, Normal and Occlusion Maps.
-		newRendererMaterialData->MRFOMap = newMaterialData->MRFOMap;
-		newRendererMaterialData->normalMap = newMaterialData->normalMap;
-		newRendererMaterialData->occlusionMap = newMaterialData->occlusionMap;
+		newRendererMaterialData->MRFOTexture = newMaterialData->MRFOTexture;
+		newRendererMaterialData->normalTexture = newMaterialData->normalTexture;
+		newRendererMaterialData->occlusionTexture = newMaterialData->occlusionTexture;
 	
 		//	Associated the Material Name with the new Material Data.
 		mapNameToMaterialData[newMaterialName] = newRendererMaterialData;
@@ -67,13 +67,13 @@ void RendererMaterialManager::updateMaterial(const std::string & requestedMateri
 		mapNameToMaterialData[requestedMaterialName]->metallicRoughnessFresnelOpacity = newMaterialData->metallicRoughnessFresnelOpacity;
 
 		//	Copy over the Diffuse and Specular Albedo Maps.
-		mapNameToMaterialData[requestedMaterialName]->diffuseAlbedoMap = newMaterialData->diffuseAlbedoMap;
-		mapNameToMaterialData[requestedMaterialName]->specularAlbedoMap = newMaterialData->specularAlbedoMap;
+		mapNameToMaterialData[requestedMaterialName]->diffuseAlbedoTexture = newMaterialData->diffuseAlbedoTexture;
+		mapNameToMaterialData[requestedMaterialName]->specularAlbedoTexture = newMaterialData->specularAlbedoTexture;
 
 		//	Copy over the MRFO, Normal and Occlusion Maps.
-		mapNameToMaterialData[requestedMaterialName]->MRFOMap = newMaterialData->MRFOMap;
-		mapNameToMaterialData[requestedMaterialName]->normalMap = newMaterialData->normalMap;
-		mapNameToMaterialData[requestedMaterialName]->occlusionMap = newMaterialData->occlusionMap;
+		mapNameToMaterialData[requestedMaterialName]->MRFOTexture = newMaterialData->MRFOTexture;
+		mapNameToMaterialData[requestedMaterialName]->normalTexture = newMaterialData->normalTexture;
+		mapNameToMaterialData[requestedMaterialName]->occlusionTexture = newMaterialData->occlusionTexture;
 	}
 	else
 	{

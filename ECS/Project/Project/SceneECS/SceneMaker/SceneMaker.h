@@ -59,6 +59,7 @@ private:
 	virtual bool updateTransformTypeComponent(const long int & entityID, const std::vector<std::string> & currentComponentCommand);
 	virtual bool updateGeometryTypeComponent(const long int & entityID, const std::vector<std::string> & currentComponentCommand);
 	virtual bool updateRenderingTypeComponent(const long int & entityID, const std::vector<std::string> & currentComponentCommand);
+	virtual bool updateLightTypeComponent(const long int & entityID, const std::vector<std::string> & currentComponentCommand);
 
 	//	Check if we should ignore the line in the creation of the Scene Description.
 	virtual bool shouldIgnoreLine(const std::string & line);

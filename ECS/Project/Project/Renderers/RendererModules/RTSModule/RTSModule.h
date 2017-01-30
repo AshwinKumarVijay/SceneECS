@@ -11,7 +11,7 @@ class RTSModule : public RendererModule
 public:
 
 	//	Default RTSModule Constructor.
-	RTSModule(std::shared_ptr<Renderer> newModuleRenderer, const unsigned int & newSourceTextureID);
+	RTSModule(std::shared_ptr<Renderer> newRenderer, const unsigned int & newSourceTextureID);
 
 	//	Default RTSModule Destructor.
 	virtual ~RTSModule();

@@ -9,11 +9,11 @@
 #include "../../RendererResourceManagers/RendererShaderManager/RendererShaderData/RendererShaderData.h"
 
 //	Default DPassLightingModule Constructor.
-DPassLightingModule::DPassLightingModule(std::shared_ptr<Renderer> newModuleRenderer, std::shared_ptr<const GBufferModule> newGBufferModule, std::shared_ptr<const LightsModule> newLightsModule) : RendererModule(newModuleRenderer)
+DPassLightingModule::DPassLightingModule(std::shared_ptr<Renderer> newRenderer, std::shared_ptr<const GBufferModule> newGBufferModule, std::shared_ptr<const LightsModule> newLightsModule) : RendererModule(newRenderer)
 {
 	//	Copy over the Screen Width and Screen Height Textures.
-	screenWidth = newModuleRenderer->getSceneQuality().screenWidth;
-	screenHeight = newModuleRenderer->getSceneQuality().screenHeight;
+	screenWidth = newRenderer->getSceneQuality().screenWidth;
+	screenHeight = newRenderer->getSceneQuality().screenHeight;
 
 	//	Copy over the G Buffer Module.
 	gBufferModule = newGBufferModule;
@@ -37,7 +37,7 @@ DPassLightingModule::DPassLightingModule(std::shared_ptr<Renderer> newModuleRend
 	deferredPassLightingShader->addPropertyValue("Fragment Shader Source", fsSource);
 
 	//	Add the Shader to the Module Renderer.
-	newModuleRenderer->addShader(deferredPassLightingShader);
+	newRenderer->addShader(deferredPassLightingShader);
 
 	//	
 	createDeferredPassLightingTexturesAndFramebuffers();

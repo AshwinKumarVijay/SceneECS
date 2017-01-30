@@ -23,20 +23,20 @@ struct RendererMaterialData
 	//	Metallic, Roughness and Opacity.
 	glm::vec4 metallicRoughnessFresnelOpacity = glm::vec4(1.0, 1.0, 1.0, 1.0);
 
-	//	The Diffuse Albedo Map - No Default Diffuse Albedo Map.
-	std::string diffuseAlbedoMap = "NONE";
+	//	The Diffuse Albedo Texture - No Default Diffuse Albedo Map.
+	std::string diffuseAlbedoTexture = "";
 
 	//	The Specular Albedo Map - No Default Specular Albedo Map.
-	std::string specularAlbedoMap = "NONE";
+	std::string specularAlbedoTexture = "";
 
 	//	The Metallic Roughness Fresnel Opacity Map.
-	std::string MRFOMap = "NONE";
+	std::string MRFOTexture = "";
 
 	//	The Normal Map - No Default Normal Map.
-	std::string normalMap = "NONE";
+	std::string normalTexture = "";
 
 	//	The Occlusion Map - No Default Occlusion Map.
-	std::string occlusionMap = "NONE";
+	std::string occlusionTexture = "";
 
 };
 

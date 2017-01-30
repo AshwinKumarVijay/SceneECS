@@ -54,7 +54,7 @@ class LightsModule : public RendererModule
 public:
 
 	//	Default LightsModule Constructor.
-	LightsModule(std::shared_ptr<Renderer> newModuleRenderer);
+	LightsModule(std::shared_ptr<Renderer> newRenderer);
 
 	//	Default LightsModule Destructor.
 	virtual ~LightsModule();
@@ -85,7 +85,7 @@ private:
 	//	Map of the Name of the Light to the Module Meta Data.
 	std::map<std::string, unsigned int> mapNameToLightModuleMetaDataIndex;
 	
-	//	Screen Width and Screen Height being of the screen being to.
+	//	Screen Width and Screen Height being of the screen being rendered to.
 	unsigned int screenWidth, screenHeight;
 
 	//	Size of the Shadow Map being rendered to.

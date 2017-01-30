@@ -17,8 +17,9 @@ class TransformSystem;
 class RenderingSystem;
 class CameraSystem;
 class InputSystem;
-class InteractionMovementResponseSystem;
 class MovementSystem;
+class CameraControlSystem;
+class DebugSystem;
 
 class GeometryGeneratorSelector;
 class TextureGeneratorSelector;
@@ -76,15 +77,15 @@ private:
 	//	Initialize the Scene.
 	virtual void initializeScene();
 
-	//	Initialize the Camera Views.
-	virtual void initializeCameraViews();
 
+	//	The Debug System.
+	std::shared_ptr<DebugSystem> debugSystem;
 
-	//	The Interaction Generation System associated with the DemoECS.
+	//	The Interaction Generation System associated with the SceneECS.
 	std::shared_ptr<InputSystem> inputSystem;
 
-	//	The Interaction Movement Response System associated with the DemoECS.
-	std::shared_ptr<InteractionMovementResponseSystem> interactionMovementResponseSystem;
+	//	The Camera Control System.
+	std::shared_ptr<CameraControlSystem> cameraControlSystem;
 
 	//	The Camera System associated with the DemoECS.
 	std::shared_ptr<CameraSystem> cameraSystem;
@@ -107,14 +108,9 @@ private:
 	//	The Scene Maker.
 	std::shared_ptr<SceneMaker> sceneMaker;
 
-	//	The Camera Views Entities.
-	long int cameraEntity1;
-	long int cameraEntity2;
-	long int cameraEntity3;
-	long int cameraEntity4;
-
 	//	The Light Entity.
 	long int lightEntity;
+	long int cameraEntity;
 
 	//	The Resources and the Resource Description.
 	std::map<std::string, ResourceDescription> resources;

@@ -17,7 +17,7 @@ class GBufferModule : public RendererModule
 public:
 
 	//	Default GBufferModule Constructor.
-	GBufferModule(std::shared_ptr<Renderer> newModuleRenderer);
+	GBufferModule(std::shared_ptr<Renderer> newRenderer);
 
 	//	Default GBufferModule Destructor.
 	virtual ~GBufferModule();
@@ -50,6 +50,14 @@ public:
 	unsigned int viewDepthTexture() const;
 
 private:
+
+	//	Create the G Buffer Shaders.
+	virtual void createGBufferShaders(std::shared_ptr<Renderer> newModuleRenderer);
+
+	virtual void createBasicGBufferShader(std::shared_ptr<Renderer> newModuleRenderer);
+	virtual void createDiffuseTextureGBufferShader(std::shared_ptr<Renderer> newModuleRenderer);
+	virtual void createSpecularTextureGBufferShader(std::shared_ptr<Renderer> newModuleRenderer);
+	virtual void createDiffuseSpecularTexturesGBufferShader(std::shared_ptr<Renderer> newModuleRenderer);
 
 	//	Create the G Buffer Textures and Framebuffers.
 	virtual void createGBufferTexturesAndFramebuffers(const unsigned int & screenWidth, const unsigned int & screenHeight);

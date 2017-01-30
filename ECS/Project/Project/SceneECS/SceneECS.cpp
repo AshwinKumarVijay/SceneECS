@@ -7,11 +7,12 @@
 
 
 #include "../ECS/System/System.h"
+#include "../Systems/DebugSystem/DebugSystem.h"
+#include "../Systems/InputSystem/InputSystem.h"
+#include "../Systems/CameraControlSystem/CameraControlSystem.h"
 #include "../Systems/TransformSystem/TransformSystem.h"
 #include "../Systems/RenderingSystem/RenderingSystem.h"
 #include "../Systems/CameraSystem/CameraSystem.h"
-#include "../Systems/InputSystem/InputSystem.h"
-#include "../Systems/InteractionMovementResponseSystem/InteractionMovementResponseSystem.h"
 
 #include "../Components/HierarchyComponent/HierarchyComponent.h"
 #include "../Components/GeometryComponent/GeometryComponent.h"
@@ -55,13 +56,17 @@ void SceneECS::initializeECS()
 	//	Link the Event Queue with the Scene Resource Manager.
 	sceneResourceManager->linkEventQueue(getEventQueue());
 
+	//
+	debugSystem = std::make_shared<DebugSystem>(getEntityManager(), getEventQueue());
+	debugSystem->initializeSystem();
+
 	//	Initialize the InteractionGenerationSystem.
 	inputSystem = std::make_shared<InputSystem>(getEntityManager(),  getEventQueue());
 	inputSystem->initializeSystem();
 
-	interactionMovementResponseSystem = std::make_shared<InteractionMovementResponseSystem>(getEntityManager(),  getEventQueue());
-	interactionMovementResponseSystem->initializeSystem();
-
+	//	Initialize the CameraControlSystem.
+	cameraControlSystem = std::make_shared<CameraControlSystem>(getEntityManager(), getEventQueue());
+	cameraControlSystem->initializeSystem();
 
 	//	Initialize the Transform System.
 	transformSystem = std::make_shared<TransformSystem>(getEntityManager(),  getEventQueue());
@@ -80,17 +85,19 @@ void SceneECS::initializeECS()
 	textureResourceManager = std::make_shared<TextureResourceManager>(getEventQueue());
 	shaderResourceManager = std::make_shared<ShaderResourceManager>(getEventQueue());
 
+	//	Create the Scene Maker.
 	sceneMaker = std::make_shared<SceneMaker>(getEntityManager());
 
 	//	Initialize the Scene.
 	initializeScene();
 
 	//	Register the Systems.
+	ECS::registerSystem(debugSystem);
 	ECS::registerSystem(inputSystem);
-	ECS::registerSystem(interactionMovementResponseSystem);
+	ECS::registerSystem(cameraControlSystem);
 	ECS::registerSystem(transformSystem);
-	ECS::registerSystem(cameraSystem);
 	ECS::registerSystem(renderingSystem);
+	ECS::registerSystem(cameraSystem);
 
 	//	Dispatch the ECS_START_EVENT to the Event Queue.
 	getDispatcher()->dispatchToEventQueue(EventType::ECS_START_EVENT, "GLOBAL", ComponentType::NO_COMPONENT, 0);
@@ -140,7 +147,7 @@ void SceneECS::processResource(const ResourceDescription & currentResourceDescri
 		//	Texture Resource.
 		if (resourceType == "Texture")
 		{
-			textureResourceManager->processResource(currentResourceDescription);
+			sceneResourceManager->loadResource(currentResourceDescription);
 		}
 
 		if (resourceType == "OBJ")
@@ -171,13 +178,16 @@ void SceneECS::update(const float & deltaTime, const float & currentFrameTime, c
 //	Shut Down the Demo ECS.
 void SceneECS::shutDownECS()
 {
-	//	Destroy the Input System.
+	//
+	debugSystem->shutDownSystem();
+
+	//	Shut Down the Input System.
 	inputSystem->shutDownSystem();
 
-	//	Destroy the Interaction Movement System.
-	interactionMovementResponseSystem->shutDownSystem();
+	//	Shut Down the Camera Control System.
+	cameraControlSystem->shutDownSystem();
 
-	//	Destroy the CameraSystem.
+	//	Shut Down the Camera System.
 	cameraSystem->shutDownSystem();
 
 	//	Destroy the Transform System.
@@ -190,11 +200,14 @@ void SceneECS::shutDownECS()
 //	Miscellaneous clean up of the Systems.
 void SceneECS::destroyECS()
 {
+	//
+	debugSystem->shutDownSystem();
+
 	//	Destroy the Input System.
 	inputSystem->destroySystem();
 
-	//	Destroy the Interaction Movement System.
-	interactionMovementResponseSystem->destroySystem();
+	//	Destroy the Camera Control System.
+	cameraControlSystem->destroySystem();
 
 	//	Destroy the CameraSystem.
 	cameraSystem->destroySystem();
@@ -218,52 +231,21 @@ void SceneECS::initializeScene()
 	//	Transform Component.
 	std::shared_ptr<TransformComponent> lightTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(lightEntity, ComponentType::TRANSFORM_COMPONENT, "NO_MODULE"));
 	lightTransformComponent->getTransform()->setScale(glm::vec3(1.0, 1.0, 1.0));
-	lightTransformComponent->getTransform()->setPosition(glm::vec3(5.0, 15.0, 0.0));
+	lightTransformComponent->getTransform()->setPosition(glm::vec3(0.0, 15.0, 15.0));
 
 	//	Light Component.
 	std::shared_ptr<LightComponent> lightComponent = std::dynamic_pointer_cast<LightComponent>(getEntityManager()->getComponentOfEntity(lightEntity, ComponentType::LIGHT_COMPONENT, "NO_MODULE"));
-}
 
-//	Initialize the Camera Views.
-void SceneECS::initializeCameraViews()
-{
-	////	Create the Camera Entity.
-	//cameraEntity1 = getEntityManager()->createEntity();
-	//getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::HIERARCHY_COMPONENT);
-	//getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::TRANSFORM_COMPONENT);
-	//getEntityManager()->addComponentToEntity(cameraEntity1, ComponentType::CAMERA_COMPONENT);
+	//	Create the Camera Entity.
+	cameraEntity = getEntityManager()->createEntity();
+	getEntityManager()->addComponentToEntity(cameraEntity, ComponentType::HIERARCHY_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity, ComponentType::TRANSFORM_COMPONENT);
+	getEntityManager()->addComponentToEntity(cameraEntity, ComponentType::CAMERA_COMPONENT);
 
-	//std::shared_ptr<TransformComponent> cameraTransformComponent1 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity1, ComponentType::TRANSFORM_COMPONENT, "NO_MODULE"));
-	//cameraTransformComponent1->getTransform()->setPosition(glm::vec3(50.0, 50.0, 50.0));
-	//cameraTransformComponent1->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
+	//	Get the Transform Component of the Camera Entity.
+	std::shared_ptr<TransformComponent> cameraTransformComponent = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity, ComponentType::TRANSFORM_COMPONENT, "NO_MODULE"));
 
-	////	Create the Camera Entity.
-	//cameraEntity2 = getEntityManager()->createEntity();
-	//getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::HIERARCHY_COMPONENT);
-	//getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::TRANSFORM_COMPONENT);
-	//getEntityManager()->addComponentToEntity(cameraEntity2, ComponentType::CAMERA_COMPONENT);
-
-	//std::shared_ptr<TransformComponent> cameraTransformComponent2 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity2, ComponentType::TRANSFORM_COMPONENT, "NO_MODULE"));
-	//cameraTransformComponent2->getTransform()->setPosition(glm::vec3(-50.0, 50.0, 50.0));
-	//cameraTransformComponent2->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
-
-	////	Create the Camera Entity.
-	//cameraEntity3 = getEntityManager()->createEntity();
-	//getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::HIERARCHY_COMPONENT);
-	//getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::TRANSFORM_COMPONENT);
-	//getEntityManager()->addComponentToEntity(cameraEntity3, ComponentType::CAMERA_COMPONENT);
-
-	//std::shared_ptr<TransformComponent> cameraTransformComponent3 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity3, ComponentType::TRANSFORM_COMPONENT, "NO_MODULE"));
-	//cameraTransformComponent3->getTransform()->setPosition(glm::vec3(-50.0, 50.0, -50.0));
-	//cameraTransformComponent3->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
-
-	////	Create the Camera Entity.
-	//cameraEntity4 = getEntityManager()->createEntity();
-	//getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::HIERARCHY_COMPONENT);
-	//getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::TRANSFORM_COMPONENT);
-	//getEntityManager()->addComponentToEntity(cameraEntity4, ComponentType::CAMERA_COMPONENT);
-
-	//std::shared_ptr<TransformComponent> cameraTransformComponent4 = std::dynamic_pointer_cast<TransformComponent>(getEntityManager()->getComponentOfEntity(cameraEntity4, ComponentType::TRANSFORM_COMPONENT, "NO_MODULE"));
-	//cameraTransformComponent4->getTransform()->setPosition(glm::vec3(50.0, 50.0, -50.0));
-	//cameraTransformComponent4->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
+	//	Set the Position and Look At Point.
+	cameraTransformComponent->getTransform()->setPosition(glm::vec3(70.0, 70.0, 70.0));
+	cameraTransformComponent->getTransform()->setLookAtPoint(glm::vec3(0.0, 0.0, 0.0));
 }

@@ -2,17 +2,25 @@
 
 //	OBJ Resources!
 #define Resource
-Resource Name = Sphere
-Resource Type = OBJ
-Directory = Assets/OBJs/
-Source Filename = Sphere.obj
-#end Resource
-
-#define Resource
 Resource Name = Cube
 Resource Type = OBJ
 Directory = Assets/OBJs/
 Source Filename = Cube.obj
+#end Resource
+
+#define Resource
+Resource Name = Character_Old
+Resource Type = OBJ
+Directory = Assets/OBJs/CharactersVox/chr_old/
+Source Filename = chr_old.obj
+#end Resource
+
+
+#define Resource
+Resource Name = GreenVat1
+Resource Type = OBJ
+Directory = Assets/OBJs/ObjectsVox/GreenVat1/
+Source Filename = GreenVat1.obj
 #end Resource
 
 
