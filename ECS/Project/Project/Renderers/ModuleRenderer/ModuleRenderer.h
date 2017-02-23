@@ -135,6 +135,10 @@ public:
 	//	Upload the Secondary Post Process Textures.
 	virtual void uploadSecondaryPostProcessTextures(const RendererShaderData & rendererShaderData, GLuint postProcessTextureFiveID, GLuint postProcessTextureSixID, GLuint postProcessTextureSevenID, GLuint postProcessTextureEightID);
 
+	//	Upload the Noise Textures.
+	virtual void uploadNoiseTextures(const RendererShaderData & rendererShaderData);
+
+
 private:
 
 	
@@ -143,6 +147,9 @@ private:
 
 	//	Initialize the Modules.
 	virtual void initializeModules();
+
+	//	Initialize the Noise Textures();
+	virtual void initializeNoiseTextures(unsigned int screenWidth, unsigned int screenHeight);
 
 	//	Render the G Buffer Module.
 	virtual void renderGBufferModule(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
@@ -158,6 +165,9 @@ private:
 
 	//	Render the Foward Lighting Module.
 	virtual void renderForwardLightingModule(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
+
+	//	Render the SSAO Module.
+	virtual void renderSSAOModule(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
 
 	//	Render the Render To Screen Module.
 	virtual void renderRTSModule(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera);
@@ -204,6 +214,8 @@ private:
 
 	std::shared_ptr<RTSModule> rtsModule;
 
+	//	Noise Textures.
+	unsigned int noiseTextureOne, noiseTextureTwo, noiseTextureThree, noiseTextureFour;
 
 };
 

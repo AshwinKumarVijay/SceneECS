@@ -22,7 +22,7 @@ Renderer::Renderer()
 	defaultSceneQuality.bloomThreshold = 1;
 
 	//	Scene Quality - SSAO.
-	defaultSceneQuality.ssaoQuality = 1;
+	defaultSceneQuality.ssaoQuality = 4;
 
 	//	Scene Quality - Shadow Resolution.
 	defaultSceneQuality.shadowSize = 2048;

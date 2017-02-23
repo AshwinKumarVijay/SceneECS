@@ -57,7 +57,7 @@ void DPassLightingModule::render(const float & deltaFrameTime, const float & cur
 	glUseProgram(deferredPassLightingShader->getShaderID());
 
 	//	Bind the Deferred Pass Lighting Framebuffer Object.
-	glBindFramebuffer(GL_FRAMEBUFFER, deferredPassLightingFramebufferObject);
+	glBindFramebuffer(GL_FRAMEBUFFER, deferredPassLightingFramebuffer);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -106,8 +106,8 @@ void DPassLightingModule::createDeferredPassLightingTexturesAndFramebuffers()
 
 
 	//	Bind the Deferred Pass Lighting Framebuffer Object
-	glGenFramebuffers(1, &deferredPassLightingFramebufferObject);
-	glBindFramebuffer(GL_FRAMEBUFFER, deferredPassLightingFramebufferObject);
+	glGenFramebuffers(1, &deferredPassLightingFramebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, deferredPassLightingFramebuffer);
 
 	//	Associate the Color Texture with the Current Framebuffer.
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, deferredPassLightingModuleColorTexture, 0);

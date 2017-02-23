@@ -3,7 +3,7 @@
 
 
 //	Default Sampler Constructor.
-Sampler::Sampler(const int & sampleNumber)
+Sampler::Sampler(const unsigned int & sampleNumber)
 {
 	generateHemisphereKernel(sampleNumber);
 }

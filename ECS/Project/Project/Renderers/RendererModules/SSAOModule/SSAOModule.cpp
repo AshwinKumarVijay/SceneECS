@@ -4,11 +4,12 @@
 #include "../../RenderableManager/RenderableManager.h"
 #include "../../Renderer/SceneMetaData.h"
 #include "../../RendererResourceManagers/RendererShaderManager/RendererShaderData/RendererShaderData.h"
+#include "../../Sampler/Sampler.h"
 
-
+#include "../../../Camera/Camera.h"
 
 //	Default Ambient Occlusion Renderer Module Constructor.
-SSAOModule::SSAOModule(std::shared_ptr<Renderer> newRenderer, unsigned int worldSpacePositionTextureID, unsigned int worldSpaceVertexNormalAndDepthTextureID, unsigned int ambientColorTexture, unsigned int ambientDepthTexture) : RendererModule(newRenderer)
+SSAOModule::SSAOModule(std::shared_ptr<Renderer> newRenderer, unsigned int newWorldSpaceVertexPositionTexture, unsigned int newWorldSpaceVertexNormalAndDepthTexture, unsigned int newAmbientPassColorTexture, unsigned int newAmbientPassDepthTexture) : RendererModule(newRenderer)
 {
 	//	Get the Module Renderer.
 	std::shared_ptr<ModuleRenderer> moduleRenderer = std::dynamic_pointer_cast<ModuleRenderer>(newRenderer);
@@ -33,10 +34,21 @@ SSAOModule::SSAOModule(std::shared_ptr<Renderer> newRenderer, unsigned int world
 	ssaoShader->addPropertyValue("Fragment Shader Source", fsSource);
 
 	//	Add the Shader.
-	//	newRenderer->addShader(ssaoShader);
+	newRenderer->addShader(ssaoShader);
 
 	//	Create the SSAO Framebuffers and Textures.
-	createSSAOFramebuffersAndTextures();
+	createSSAOTexturesAndFramebuffers();
+
+	worldSpaceVertexPositionTexture = newWorldSpaceVertexPositionTexture;
+	worldSpaceVertexNormalAndDepthTexture = newWorldSpaceVertexNormalAndDepthTexture;
+	ambientColorPassTexture = newAmbientPassColorTexture;
+	ambientDepthPassTexture = newAmbientPassDepthTexture;
+
+	//	Create the Sampler.
+	ssaoQuality = moduleRenderer->getSceneQuality().ssaoQuality;
+	ssaoSampleCount = (unsigned int)(pow(2, ssaoQuality));
+	ssaoSampler = std::make_shared<Sampler>(ssaoSampleCount);
+	
 }
 
 
@@ -50,19 +62,28 @@ SSAOModule::~SSAOModule()
 void SSAOModule::render(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 	//	Bind the Framebuffer.
-	glBindFramebuffer(GL_FRAMEBUFFER, ambientOcclusionFramebufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, ambientOcclusionFramebuffer);
 
 	glUseProgram(ssaoShader->getShaderID());
 
+	//	
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	//	Get the Renderer.
 	std::shared_ptr<ModuleRenderer> moduleRenderer = std::dynamic_pointer_cast<ModuleRenderer>(getRenderer().lock());
 
-	//	Upload the Primary Post Process Textures.
-	moduleRenderer->uploadPrimaryPostProcessTextures(*ssaoShader, 0, 0, 0, 0);
+	//	Upload the Camera Data.
+	moduleRenderer->uploadCameraData(*ssaoShader, glm::vec4(activeCamera->getCameraPosition(), 1.0), activeCamera->getPerspectiveMatrix(), activeCamera->getViewMatrix(), glm::vec4(activeCamera->getNearClip(), activeCamera->getFarClip(), 0.0, 0.0));
 
+	//	Upload the Primary Post Process Textures.
+	moduleRenderer->uploadPrimaryPostProcessTextures(*ssaoShader, worldSpaceVertexPositionTexture, worldSpaceVertexNormalAndDepthTexture, ambientColorPassTexture, ambientDepthPassTexture);
+
+	uploadSamplingParameters();
+
+	//	Upload the Noise Textures.
+	moduleRenderer->uploadNoiseTextures(*ssaoShader);
+	
 	//	Render the SSAO Pass.
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -70,8 +91,39 @@ void SSAOModule::render(const float & deltaFrameTime, const float & currentFrame
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+//	Return the Ambient Occlusion Pass Color Texture.
+unsigned int SSAOModule::viewAmbientOcclusionPassColorTexture() const
+{
+	return ambientOcclusionPassColorTexture;
+}
+
+//	Return the Ambient Occlusion Pass Depth Texture.
+unsigned int SSAOModule::viewAmbientOcclusionPassDepthTexture() const
+{
+	return ambientOcclusionPassDepthTexture;
+}
+
+//	Upload the Sampling Parameters.
+void SSAOModule::uploadSamplingParameters()
+{
+	//	Upload the Hemisphere Samples.
+	int u_hemisphereSamples = -1;
+	if (ssaoShader->getUniformLocation("u_hemisphereSamples", u_hemisphereSamples))
+	{
+		glUniform4fv(u_hemisphereSamples, (int)ssaoSampler->viewHemisphereKernel().size(), glm::value_ptr(*ssaoSampler->viewHemisphereKernel().data()));
+	}
+
+
+	//	Upload the Hemisphere Radius.
+	int u_hemisphereRadius = -1;
+	if (ssaoShader->getUniformLocation("u_hemisphereRadius", u_hemisphereRadius))
+	{
+		glUniform1f(u_hemisphereRadius, 4.0f);
+	}
+}
+
 //	Create the SSAO Framebuffers and Textures.
-void SSAOModule::createSSAOFramebuffersAndTextures()
+void SSAOModule::createSSAOTexturesAndFramebuffers()
 {
 	//	Active Texture 0.
 	glActiveTexture(GL_TEXTURE0 + 0);
@@ -94,7 +146,8 @@ void SSAOModule::createSSAOFramebuffersAndTextures()
 
 
 	//	Generate the Ambient Occlusion Framebuffer ID.
-	glGenFramebuffers(1, &ambientOcclusionFramebufferID);
+	glGenFramebuffers(1, &ambientOcclusionFramebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, ambientOcclusionFramebuffer);
 
 	//	Associate the Color Texture with the Current Framebuffer.
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, ambientOcclusionPassColorTexture, 0);

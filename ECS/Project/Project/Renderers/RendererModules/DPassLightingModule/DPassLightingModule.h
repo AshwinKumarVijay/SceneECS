@@ -43,7 +43,7 @@ private:
 	unsigned int deferredPassLightingModuleDepthTexture;
 
 	//	Deferred Pass Framebuffer Object.
-	unsigned int deferredPassLightingFramebufferObject;
+	unsigned int deferredPassLightingFramebuffer;
 
 	//	Screen Width and Screen Height.
 	unsigned int screenWidth, screenHeight;

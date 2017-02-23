@@ -10,6 +10,7 @@
 #include "../RendererModules/RTSModule/RTSModule.h"
 
 #include "../RendererResourceManagers/RendererShaderManager/RendererShaderData/RendererShaderData.h"
+#include "../../RNGs/RNGs.h"
 
 //	Default ModuleRenderer Constructor.
 ModuleRenderer::ModuleRenderer()
@@ -29,12 +30,16 @@ void ModuleRenderer::initializeRenderer()
 	//	The Renderable Manager.
 	renderableManager = std::make_shared<RenderableManager>();
 
-	//	initialize the Module Renderer.
+	//	Initialize the Module Renderer.
 	initializeModuleRenderer();
+
+	//	Initialize the Noise Textures.
+	initializeNoiseTextures(getSceneQuality().screenWidth, getSceneQuality().screenHeight);
 
 	//	Initialize the Modules.
 	initializeModules();
 }
+
 
 //	Create the Renderable and return the RenderableID.
 long int ModuleRenderer::createRenderable()
@@ -86,6 +91,9 @@ void ModuleRenderer::render(const float & deltaFrameTime, const float & currentF
 
 	//	Render the Deferred Lighting Module.
 	renderDeferredLightingModule(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
+
+	//	Render the SSAO Module.
+	renderSSAOModule(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
 
 	//	Render the RTS Module.
 	renderRTSModule(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
@@ -852,6 +860,46 @@ void ModuleRenderer::uploadSecondaryPostProcessTextures(const RendererShaderData
 
 }
 
+//	Upload the Noise Textures.
+void ModuleRenderer::uploadNoiseTextures(const RendererShaderData & rendererShaderData)
+{
+	int t_noiseTextureOne = -1;
+	if (rendererShaderData.getUniformLocation("t_noiseTextureOne", t_noiseTextureOne))
+	{
+		glActiveTexture(GL_TEXTURE0 + 15);
+		glBindTexture(GL_TEXTURE_2D, noiseTextureOne);
+		glUniform1i(t_noiseTextureOne, 15);
+		glActiveTexture(GL_TEXTURE0);
+	}
+
+	int t_noiseTextureTwo = -1;
+	if (rendererShaderData.getUniformLocation("t_noiseTextureTwo", t_noiseTextureTwo))
+	{
+		glActiveTexture(GL_TEXTURE0 + 16);
+		glBindTexture(GL_TEXTURE_2D, noiseTextureTwo);
+		glUniform1i(t_noiseTextureTwo, 16);
+		glActiveTexture(GL_TEXTURE0);
+	}
+
+	int t_noiseTextureThree = -1;
+	if (rendererShaderData.getUniformLocation("t_noiseTextureThree", t_noiseTextureThree))
+	{
+		glActiveTexture(GL_TEXTURE0 + 17);
+		glBindTexture(GL_TEXTURE_2D, noiseTextureThree);
+		glUniform1i(t_noiseTextureThree, 17);
+		glActiveTexture(GL_TEXTURE0);
+	}
+
+	int t_noiseTextureFour = -1;
+	if (rendererShaderData.getUniformLocation("t_noiseTextureFour", t_noiseTextureFour))
+	{
+		glActiveTexture(GL_TEXTURE0 + 18);
+		glBindTexture(GL_TEXTURE_2D, noiseTextureFour);
+		glUniform1i(t_noiseTextureFour, 18);
+		glActiveTexture(GL_TEXTURE0);
+	}
+}
+
 //	Initialize the Module Renderer.
 void ModuleRenderer::initializeModuleRenderer()
 {
@@ -893,6 +941,149 @@ void ModuleRenderer::initializeModules()
 	rtsModule = std::make_shared<RTSModule>(this->shared_from_this(), dPassLightingModule->viewDeferredPassLightingColorTexture());
 }
 
+//	Initialize the Noise Textures();
+void ModuleRenderer::initializeNoiseTextures(unsigned int screenWidth, unsigned int screenHeight)
+{
+	GLubyte * pixelData = new GLubyte[screenWidth * screenHeight * 4];
+
+	//	------------------------------------------------------------------------------------------------------------------------------	//
+	//	Iterate and copy the pixels from the image.
+	for (unsigned int i = 0; i < screenHeight; i++)
+	{
+		for (unsigned int j = 0; j < screenWidth; j++)
+		{
+			pixelData[((i * screenWidth + j) * 4) + 0] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 1] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 2] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 3] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+		}
+	}
+
+	//	Generate the New Texture.
+	glGenTextures(1, &noiseTextureOne);
+	glBindTexture(GL_TEXTURE_2D, noiseTextureOne);
+
+	//
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	//	Set the Texture parameters.
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
+
+	//	Bind it to the appropriate location.
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+	//	------------------------------------------------------------------------------------------------------------------------------	//
+
+	//	Iterate and copy the pixels from the image.
+	for (unsigned int i = 0; i < screenHeight; i++)
+	{
+		for (unsigned int j = 0; j < screenWidth; j++)
+		{
+			pixelData[((i * screenWidth + j) * 4) + 0] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 1] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 2] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 3] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+		}
+	}
+
+	glGenTextures(1, &noiseTextureTwo);
+	glBindTexture(GL_TEXTURE_2D, noiseTextureTwo);
+
+	//
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	//	Set the Texture parameters.
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
+
+	//	Bind it to the appropriate location.
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+	//	------------------------------------------------------------------------------------------------------------------------------	//
+
+	//	Iterate and copy the pixels from the image.
+	for (unsigned int i = 0; i < screenHeight; i++)
+	{
+		for (unsigned int j = 0; j < screenWidth; j++)
+		{
+			pixelData[((i * screenWidth + j) * 4) + 0] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 1] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 2] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 3] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+		}
+	}
+
+
+
+	glGenTextures(1, &noiseTextureThree);
+	glBindTexture(GL_TEXTURE_2D, noiseTextureThree);
+
+	//
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	//	Set the Texture parameters.
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
+
+	//	Bind it to the appropriate location.
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+	//	------------------------------------------------------------------------------------------------------------------------------	//
+
+	//	Iterate and copy the pixels from the image.
+	for (unsigned int i = 0; i < screenHeight; i++)
+	{
+		for (unsigned int j = 0; j < screenWidth; j++)
+		{
+			pixelData[((i * screenWidth + j) * 4) + 0] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 1] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 2] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+
+			pixelData[((i * screenWidth + j) * 4) + 3] = (GLubyte)RNGs::doubleRand(0.0, 255.0);
+		}
+	}
+
+
+	glGenTextures(1, &noiseTextureFour);
+	glBindTexture(GL_TEXTURE_2D, noiseTextureFour);
+
+	//
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	//	Set the Texture parameters.
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
+
+	//	Bind it to the appropriate location.
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//	------------------------------------------------------------------------------------------------------------------------------	//
+
+}
+
 //	Render the G Buffer Module.
 void ModuleRenderer::renderGBufferModule(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
@@ -921,6 +1112,12 @@ void ModuleRenderer::renderDeferredLightingModule(const float & deltaFrameTime, 
 void ModuleRenderer::renderForwardLightingModule(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
 {
 
+}
+
+//	Render the SSAO Module.
+void ModuleRenderer::renderSSAOModule(const float & deltaFrameTime, const float & currentFrameTime, const float & lastFrameTime, std::shared_ptr<const Camera> activeCamera)
+{
+	ssaoModule->render(deltaFrameTime, currentFrameTime, lastFrameTime, activeCamera);
 }
 
 //	Render the Render to Screen Module.

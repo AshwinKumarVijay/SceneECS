@@ -62,7 +62,7 @@ int initializeGLFW()
 	window = glfwCreateWindow(1600, 900, "Scene ECS", NULL, NULL);
 
 	glfwSetWindowPos(window, 160, 90);
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
 
 	//	Set the Callbacks.
 	glfwSetKeyCallback(window, key_callback);
@@ -125,14 +125,14 @@ void enterRenderCycle()
 		//	Check the Delta Frame Time.
 		deltaFrameTime = currentFrameTime - lastFrameTime;
 
+		//	Poll the EVents.
+		glfwPollEvents();
+
 		//	Update the ECS
 		ecs->update(deltaFrameTime, currentFrameTime, lastFrameTime);
 
 		//	Swap Buffers.
 		glfwSwapBuffers(window);
-
-		//	Poll the EVents.
-		glfwPollEvents();
 
 		//	Update the Last Frame Time.
 		lastFrameTime = currentFrameTime;

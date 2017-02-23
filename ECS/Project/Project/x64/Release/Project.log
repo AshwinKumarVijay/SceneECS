@@ -1,8 +1,2 @@
-﻿  EntityManager.cpp
-  Generating code
-  38 of 9473 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    37 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\SceneECS\ECS\Project\x64\Release\Project.exe
-  Project.vcxproj -> C:\Users\Ashwin\Documents\GitHub\SceneECS\ECS\Project\x64\Release\Project.pdb (Full PDB)
+﻿  Project.vcxproj -> C:\Users\Ashwin Kumar Vijay\Documents\GitHub\SceneECS\ECS\Project\x64\Release\Project.exe
+  Project.vcxproj -> C:\Users\Ashwin Kumar Vijay\Documents\GitHub\SceneECS\ECS\Project\x64\Release\Project.pdb (Full PDB)

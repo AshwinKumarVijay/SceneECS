@@ -20,42 +20,25 @@ layout (location = 0) in vec4 v_vertexPosition;
 layout (location = 0) out vec4 o_baseOutputColor;
 
 //	Input the Post Process Texture.
-
 layout (binding = 35) uniform sampler2D pp_inputTextureOne;			//	World Vertex Position.
 layout (binding = 36) uniform sampler2D pp_inputTextureTwo;			//	World Space Vertex Normal And Depth.
-
-layout (binding = 39) uniform sampler2D pp_inputTextureFive;		//	Ambient Color Pass Texture.
-layout (binding = 40) uniform sampler2D pp_inputTextureSix;			//	Ambient Depth Pass Texture.
-layout (binding = 41) uniform sampler2D pp_inputTextureSeven;		//	Unused Texture.
-layout (binding = 42) uniform sampler2D pp_inputTextureEight;		//	Unused Texture.
+layout (binding = 39) uniform sampler2D pp_inputTextureThree;		//	Ambient Color Pass Texture.
+layout (binding = 40) uniform sampler2D pp_inputTextureFour;		//	Ambient Depth Pass Texture.
 
 
 //	Input the Noise Textures.
-layout (binding = 45) uniform sampler2D t_noiseTextureOne;
-layout (binding = 46) uniform sampler2D t_noiseTextureTwo;
-layout (binding = 47) uniform sampler2D t_noiseTextureThree;
-layout (binding = 48) uniform sampler2D t_noiseTextureFour;
+layout (binding = 45) uniform sampler2D t_noiseTextureOne;			//	Noise Texture One.
+layout (binding = 46) uniform sampler2D t_noiseTextureTwo;			//	Noise Texture Two.
+layout (binding = 47) uniform sampler2D t_noiseTextureThree;		//	Noise Texture Three.
+layout (binding = 48) uniform sampler2D t_noiseTextureFour;			//	Noise Texture Four.
 
 //	SAMPLING.
-//	Unit Square Samples.
-uniform vec4 u_unitSquareSamples[SAMPLES];
-
-//	Hemisphere Samples.
-uniform vec4 u_hemisphereSamples[SAMPLES];
-
-//	Screen Size.
-uniform vec2 u_screenSize;
 
 //	Radius.
 uniform float u_hemisphereRadius;
 
-
-//	Linearize the Given Depth.
-float linearizeDepth(float depth)
-{
-    float z = depth * 2.0 - 1.0; // Back to NDC 
-    return (2.0 * u_cameraNearFarPlaneDistance.x * u_cameraNearFarPlaneDistance.y) / (u_cameraNearFarPlaneDistance.y + u_cameraNearFarPlaneDistance.x - z * (u_cameraNearFarPlaneDistance.y - u_cameraNearFarPlaneDistance.x));	
-}
+//	Hemisphere Samples.
+uniform vec4 u_hemisphereSamples[SAMPLES];
 
 
 //	THE VERTEX SHADER MAIN.
@@ -84,9 +67,13 @@ void main(void)
 	//	Set the occlusion factor to be zero.
 	float occlusion = 0.0;
 
+	//	The Samples Count.
 	for(int i = 0; i < SAMPLES; i++)
 	{
+		//	Create the Sample Point Offset.
 		vec3 samplePoint = (TBN * (u_hemisphereSamples[i].xyz));
+		
+		//	Create the Sample Point in View Space.
 		samplePoint = (samplePoint * u_hemisphereRadius) + viewSpaceVertexPosition.xyz;
 		
 		vec4 offset = vec4(samplePoint, 1.0);
@@ -105,5 +92,5 @@ void main(void)
 	occlusion =	1.0 - (occlusion / (float(SAMPLES)));
 	
 	//	OUTPUT COLOR 
-	o_baseOutputColor = vec4(texture(pp_inputTextureFive, v_vertexPosition.xy).xyz, 1.0);
+	o_baseOutputColor = vec4(occlusion * texture(pp_inputTextureThree, v_vertexPosition.xy).xyz, 1.0);
 }

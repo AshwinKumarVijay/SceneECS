@@ -12,7 +12,7 @@ class Sampler
 public:
 
 	//	Default Sampler Constructor.
-	Sampler(const int & sampleNumber);
+	Sampler(const unsigned int & sampleNumber);
 
 	//	Default Sampler Destructor.
 	virtual ~Sampler();
